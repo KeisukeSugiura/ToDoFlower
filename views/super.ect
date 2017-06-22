@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%- @title %></title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="/stylesheets/ex/bootstrap.min.css">
+
+	    <!-- Bootstrap Material Design -->
+	    <link rel="stylesheet" type="text/css" href="/stylesheets/ex/bootstrap-material-design.min.css">
+	    <link rel="stylesheet" type="text/css" href="/stylesheets/ex/ripples.min.css">
+
+		<!-- jQuery -->
+    	<script src="/javascripts/ex/jquery.min.js"></script>
+
+    </head>
+    <body>
+		<h1>データベースコントローラ for 管理者</h1>
+		<div class="container">
+			<h2>Selection</h2>
+			
+			<% for dbName in @dbList : %>
+				<div class="radio">
+					<label>
+						<input type="radio" name="datasRadios" id="<%= dbName %>" value="<%= dbName %>" >
+						<%= dbName %>
+					</label>
+				</div>
+			<% end %>
+
+			<div id="show_datas">
+				<!-- データベースの中身を表示する -->
+				<h2>Datas</h2>
+				<div>
+					<h3>INSERT</h3>
+					<div id="insert_form">
+						<!-- insert出す -->
+					</div>
+					<button class="btn btn-success" id="insert_button">insert</button>
+				</div>
+				
+				<div>
+					<h3>SEARCH</h3>
+					<div id="search_form">
+						<!-- 検索クエリ出す -->
+					</div>
+					<button class="btn btn-info" id="search_button">search</button>
+				</div>
+
+				<div id="data_table">
+					<!-- 結果 -->
+					<!-- <table class="table table-responsive">
+						<thead>
+							<th>項目1</th>
+							<th>項目2</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1-1</td>
+								<td>1-2</td>
+							</tr>
+							<tr>
+								<td>2-1</td>
+								<td>2-2</td>
+							</tr>
+						</tbody>
+					</table> -->
+				</div>
+			</div>
+
+		</div>
+
+        <!-- Twitter Bootstrap -->
+	    <script src="/javascripts/ex/bootstrap.min.js"></script>
+
+	    <!-- Material Design for Bootstrap -->
+	    <script src="/javascripts/ex/material.min.js"></script>
+	    <script src="/javascripts/ex/ripples.min.js"></script>
+	
+	    <script>
+      		$.material.init();
+	    </script>
+    </body>
+</html>

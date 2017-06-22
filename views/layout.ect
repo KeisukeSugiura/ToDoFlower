@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%- @title %></title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="/stylesheets/ex/bootstrap.min.css">
+
+	    <!-- Bootstrap Material Design -->
+	    <link rel="stylesheet" type="text/css" href="/stylesheets/ex/bootstrap-material-design.min.css">
+	    <link rel="stylesheet" type="text/css" href="/stylesheets/ex/ripples.min.css">
+
+		<!-- jQuery -->
+    	<script src="/javascripts/ex/jquery.min.js"></script>
+
+    </head>
+    <body>
+        <% content %>
+
+        <!-- Twitter Bootstrap -->
+	    <script src="/javascripts/ex/bootstrap.min.js"></script>
+
+	    <!-- Material Design for Bootstrap -->
+	    <script src="/javascripts/ex/material.min.js"></script>
+	    <script src="/javascripts/ex/ripples.min.js"></script>
+	
+	    <script>
+      		$.material.init();
+	    </script>
+    </body>
+</html>
