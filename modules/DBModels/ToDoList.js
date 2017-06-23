@@ -6,7 +6,7 @@ var ToDoListDB = function(mongoose){
 	var Schema = mongoose.Schema;
 
 	var SchemaData = {
-		itemId : {type : String, default : "", conv : function(str){return String(str);}},
+		todoId : {type : String, default : "", conv : function(str){return String(str);}},
 		publisherId : {type : String, default : "", conv : function(str){return String(str);}},
 		executorId : {type : String, default : "", conv : function(str){return String(str);}},
 		inputTime : {type : Date, default : new Date(), conv : function(str){return new Date(str);}},
