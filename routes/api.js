@@ -51,20 +51,20 @@ router.get('/super/gui', function(req,res,next){
 	find
  */
 
-router.get('/super/User/find', function(req, res, next){
-	
+router.get('/User/find', function(req, res, next){
+	CTRModule.find(req,res,'User');
 });
 
-router.get('/super/Password/find', function(req, res, next){
-
+router.get('/Password/find', function(req, res, next){
+	CTRModule.find(req,res,'Password');
 });
 
-router.get('/super/ToDoList/find', function(req, res, next){
-
+router.get('/ToDoList/find', function(req, res, next){
+	CTRModule.find(req,res,'ToDoList');
 });
 
-router.get('/super/ToDoListTag/find', function(req, res, next){
-
+router.get('/ToDoListTag/find', function(req, res, next){
+	CTRModule.find(req,res,'ToDoListTag');
 });
 
 
@@ -72,20 +72,20 @@ router.get('/super/ToDoListTag/find', function(req, res, next){
 	insert
  */
 
-router.post('/super/User/insert', function(req, res, next){
-	
+router.post('/User/insert', function(req, res, next){
+	CTRModule.insert(req,res,'User');
 });
 
-router.post('/super/Password/insert', function(req, res, next){
-
+router.post('/Password/insert', function(req, res, next){
+	CTRModule.insert(req,res,'Password');
 });
 
-router.post('/super/ToDoList/insert', function(req, res, next){
-
+router.post('/ToDoList/insert', function(req, res, next){
+	CTRModule.insert(req,res,'ToDoList');
 });
 
-router.post('/super/ToDoListTag/insert', function(req, res, next){
-
+router.post('/ToDoListTag/insert', function(req, res, next){
+	CTRModule.insert(req,res,'ToDoListTag');
 });
 
 
@@ -94,20 +94,20 @@ router.post('/super/ToDoListTag/insert', function(req, res, next){
 	upsert
  */
 
-router.post('/super/User/upsert', function(req, res, next){
-	
+router.post('/User/upsert', function(req, res, next){
+	CTRModule.upsert(req, res, 'User');
 });
 
-router.post('/super/Password/upsert', function(req, res, next){
-
+router.post('/Password/upsert', function(req, res, next){
+	CTRModule.upsert(req, res, 'Password');
 });
 
-router.post('/super/ToDoList/upsert', function(req, res, next){
-
+router.post('/ToDoList/upsert', function(req, res, next){
+	CTRModule.upsert(req, res, 'ToDoList');
 });
 
-router.post('/super/ToDoListTag/upsert', function(req, res, next){
-
+router.post('/ToDoListTag/upsert', function(req, res, next){
+	CTRModule.upsert(req, res, 'ToDoListTag');
 });
 
 
@@ -115,25 +115,28 @@ router.post('/super/ToDoListTag/upsert', function(req, res, next){
 	remove
  */
 
-router.post('/super/User/remove', function(req, res, next){
-	
+router.post('/User/remove', function(req, res, next){
+	CTRModule.remove(req, res, 'User');
 });
 
-router.post('/super/Password/remove', function(req, res, next){
-
-});
-
-router.post('/super/ToDoList/remove', function(req, res, next){
+router.post('/Password/remove', function(req, res, next){
+	CTRModule.remove(req, res, 'Password');
 
 });
 
-router.post('/super/ToDoListTag/remove', function(req, res, next){
+router.post('/ToDoList/remove', function(req, res, next){
+	CTRModule.remove(req, res, 'ToDoList');
 
+});
+
+router.post('/ToDoListTag/remove', function(req, res, next){
+	CTRModule.remove(req, res, 'ToDoListTag');
 });
 
 
 /*
 	control database methods
+	単純なデータ挿入に利用する
  */
 var CTRModule = (function(){
 	function find(req,res,dbName){
@@ -179,7 +182,7 @@ var CTRModule = (function(){
 	    });
 	}
 
-	function ctr_upsert(req,res,dbName){
+	function upsert(req,res,dbName){
 	    dbModule.getSchema(dbName,function(schema){
 	      // if(dbName=='password'){
 	      //   req.body.password = sechash.strongHashSync(req.body.password,setting.hash_opts);
@@ -200,11 +203,19 @@ var CTRModule = (function(){
 	   });
 	}
 
-	 function ctr_delete(req,res,dbName){
+	function remove(req,res,dbName){
 	  	dbModule.remove(dbName,{_id:req.body._id},{},function(result){
 	     	 res.send(req.body);
 	  	});
 	}
+
+	return {
+		find : find,
+		insert : insert,
+		upsert : upsert,
+		remove : remove
+	}
+
 })();
 
 

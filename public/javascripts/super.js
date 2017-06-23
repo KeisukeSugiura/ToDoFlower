@@ -5,7 +5,7 @@ function getAllDatas(){
 	//get -> search form -> insert form
 	var select = $("[name=datasRadios]:checked").val();
 	console.log(select);
-	AjaxModule[select].getAll(function(data){
+	AjaxModule[select].find({},function(data){
 		console.log(data);
 		var schema = data.schema;
 		if(data.datas.length == 0){
@@ -46,7 +46,7 @@ function setForms(select,data_struct){
 			sendObject[elm] = $('#insert_form input.'+elm).val();
 		});
 		console.log(sendObject);
-		CONTROL_MODULE[select].insert(sendObject,
+		AjaxModule[select].insert(sendObject,
 			function(){
 				var sendObject = {};
 				keys.forEach(function(elm,index,arr){
@@ -56,7 +56,7 @@ function setForms(select,data_struct){
 					}
 				});
 				console.log(sendObject);
-				CONTROL_MODULE[select].search(sendObject,function(data){
+				AjaxModule[select].find(sendObject,function(data){
 					var select = $("[name=datasRadios]:checked").val();
 					var schema = data.schema;
 					var datas = data.datas;
@@ -93,7 +93,7 @@ function setForms(select,data_struct){
 			}
 		});
 		console.log(sendObject);
-		CONTROL_MODULE[select].search(sendObject,function(data){
+		AjaxModule[select].find(sendObject,function(data){
 			var select = $("[name=datasRadios]:checked").val();
 			var schema = data.schema;
 			var datas = data.datas;
@@ -116,7 +116,7 @@ function showDatas(select,schema,datas){
 	var div_data_table = document.getElementById('data_table');
 	//table
 	var data_table = document.createElement('table');
-	data_table.setAttribute('class', "table table-responsive");
+	data_table.setAttribute('class', "table table-responsive table-bordered");
 	//data_table.contentEditable=true;
 	//table head
 	var table_head = document.createElement('thead');
@@ -192,7 +192,7 @@ function showDatas(select,schema,datas){
 		});
 		sendObject._id = $(this).attr('data-id');
 		console.log(sendObject);
-		CONTROL_MODULE[select].delete(sendObject,function(res){
+		AjaxModule[select].remove(sendObject,function(res){
 			var sendObject = {};
 
 			schema_keys.forEach(function(elm,index,arr){
@@ -202,7 +202,7 @@ function showDatas(select,schema,datas){
 				}
 			});
 
-			CONTROL_MODULE[select].search(sendObject,function(data){
+			AjaxModule[select].find(sendObject,function(data){
 				var select = $("[name=datasRadios]:checked").val();
 				var schema = data.schema;
 				var datas = data.datas;
@@ -236,7 +236,7 @@ function showDatas(select,schema,datas){
 		});
 		sendObject._id = $(this).attr('data-id');
 		console.log(sendObject);
-		CONTROL_MODULE[select].upsert(sendObject,function(res){
+		AjaxModule[select].upsert(sendObject,function(res){
 			var sendObject = {};
 			schema_keys.forEach(function(elm,index,arr){
 				var item = $('#search_form input.'+elm).val();
@@ -245,7 +245,7 @@ function showDatas(select,schema,datas){
 				}
 			});
 
-			CONTROL_MODULE[select].search(sendObject,function(data){
+			AjaxModule[select].find(sendObject,function(data){
 				var select = $("[name=datasRadios]:checked").val();
 				var schema = data.schema;
 				var datas = data.datas;
