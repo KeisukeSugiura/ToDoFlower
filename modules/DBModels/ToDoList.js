@@ -7,7 +7,8 @@ var ToDoListDB = function(mongoose){
 
 	var SchemaData = {
 		itemId : {type : String, default : "", conv : function(str){return String(str);}},
-		userId : {type : String, default : "", conv : function(str){return String(str);}},
+		publisherId : {type : String, default : "", conv : function(str){return String(str);}},
+		executorId : {type : String, default : "", conv : function(str){return String(str);}},
 		inputTime : {type : Date, default : new Date(), conv : function(str){return new Date(str);}},
 		limitTime : {type : Date, default : new Date(), conv : function(str){return new Date(str);}},
 		endTime : {type : Date, default : new Date(), conv : function(str){return new Date(str);}},
