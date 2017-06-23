@@ -63,8 +63,8 @@ router.get('/ToDoList/find', function(req, res, next){
 	CTRModule.find(req,res,'ToDoList');
 });
 
-router.get('/ToDoListTag/find', function(req, res, next){
-	CTRModule.find(req,res,'ToDoListTag');
+router.get('/Project/find', function(req, res, next){
+	CTRModule.find(req,res,'Project');
 });
 
 
@@ -88,7 +88,9 @@ router.post('/ToDoListTag/insert', function(req, res, next){
 	CTRModule.insert(req,res,'ToDoListTag');
 });
 
-
+router.post('/Project/insert', function(req, res, next){
+	CTRModule.insert(req,res,'Project');
+});
 
 /*
 	upsert
@@ -110,6 +112,9 @@ router.post('/ToDoListTag/upsert', function(req, res, next){
 	CTRModule.upsert(req, res, 'ToDoListTag');
 });
 
+router.post('/Project/upsert', function(req, res, next){
+	CTRModule.upsert(req, res, 'Project');
+});
 
 /*
 	remove
@@ -121,7 +126,6 @@ router.post('/User/remove', function(req, res, next){
 
 router.post('/Password/remove', function(req, res, next){
 	CTRModule.remove(req, res, 'Password');
-
 });
 
 router.post('/ToDoList/remove', function(req, res, next){
@@ -133,6 +137,9 @@ router.post('/ToDoListTag/remove', function(req, res, next){
 	CTRModule.remove(req, res, 'ToDoListTag');
 });
 
+router.post('/Project/remove', function(req, res, next){
+	CTRModule.remove(req, res, 'Project');
+});
 
 /*
 	control database methods

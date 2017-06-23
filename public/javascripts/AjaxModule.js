@@ -59,6 +59,7 @@ var AjaxModule = (function(){
 	modules.ToDoList = {};
 	modules.ToDoListTag = {};
 	modules.User = {};
+	modules.Project = {};
 
 	modules.Password.find = ajaxGetModel('/api/Password/find', 'json');
 	modules.Password.insert = ajaxPostModel('/api/Password/insert', 'json');
@@ -80,6 +81,10 @@ var AjaxModule = (function(){
 	modules.User.upsert = ajaxPostModel('/api/User/upsert', 'json');
 	modules.User.remove = ajaxPostModel('/api/User/remove', 'json');
 
+	modules.Project.find = ajaxGetModel('/api/Project/find', 'json');
+	modules.Project.insert = ajaxPostModel('/api/Project/insert', 'json');
+	modules.Project.upsert = ajaxPostModel('/api/Project/upsert', 'json');
+	modules.Project.remove = ajaxPostModel('/api/Project/remove', 'json');
 
 	return modules;
 
