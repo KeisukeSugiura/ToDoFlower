@@ -13,14 +13,14 @@ function DBModule(){
 
 	    databases = {};
 
+	   	databases.User = require("./DBModels/User")(mongoose);
 	    databases.Password = require("./DBModels/Password")(mongoose);
+	   	databases.Project = require("./DBModels/Project")(mongoose);
 	    databases.ToDoList = require("./DBModels/ToDoList")(mongoose);
 	   	databases.ToDoListTag = require("./DBModels/ToDoListTag")(mongoose);
-	   	databases.User = require("./DBModels/User")(mongoose);
-	   	databases.Project = require("./DBModels/Project")(mongoose);
-	   	databases.ProjectToDoList = require("./DBModels//ProjectToDoList")(mongoose);
 	   	databases.UserProject = require("./DBModels/UserProject")(mongoose);
 	   	databases.UserToDoList = require("./DBModels/UserToDoList")(mongoose);
+	   	databases.ProjectToDoList = require("./DBModels//ProjectToDoList")(mongoose);
 
 	    mongoose.connect(setting.DATABASE_URL);
 

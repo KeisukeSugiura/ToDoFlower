@@ -52,39 +52,23 @@ var AjaxModule = (function(){
 				     .always(function(data){alwaysFn(data);});
 		    	};
 	}
-	
 
+
+	/*
+		crud api for super user
+		url example : /api/User/find, /api/Password/upsert...
+		how to use : AjaxModule["dbName"].find(data, successFn, errorFn, doneFn)
+	 */
 	var modules = {};
-	modules.Password = {};
-	modules.ToDoList = {};
-	modules.ToDoListTag = {};
-	modules.User = {};
-	modules.Project = {};
-
-	modules.Password.find = ajaxGetModel('/api/Password/find', 'json');
-	modules.Password.insert = ajaxPostModel('/api/Password/insert', 'json');
-	modules.Password.upsert = ajaxPostModel('/api/Password/upsert', 'json');
-	modules.Password.remove = ajaxPostModel('/api/Password/remove', 'json');
-
-	modules.ToDoList.find = ajaxGetModel('/api/TodoList/find', 'json');
-	modules.ToDoList.insert = ajaxPostModel('/api/ToDoList/insert', 'json');
-	modules.ToDoList.upsert = ajaxPostModel('/api/ToDoList/upsert', 'json');
-	modules.ToDoList.remove = ajaxPostModel('/api/ToDoList/remove', 'json');
-
-	modules.ToDoListTag.find = ajaxGetModel('/api/ToDoListTag/find', 'json');
-	modules.ToDoListTag.insert = ajaxPostModel('/api/ToDoListTag/insert', 'json');
-	modules.ToDoListTag.upsert = ajaxPostModel('/api/ToDoListTag/upsert', 'json');
-	modules.ToDoListTag.remove = ajaxPostModel('/api/ToDoListTag/remove', 'json');
-
-	modules.User.find = ajaxGetModel('/api/User/find', 'json');
-	modules.User.insert = ajaxPostModel('/api/User/insert', 'json');
-	modules.User.upsert = ajaxPostModel('/api/User/upsert', 'json');
-	modules.User.remove = ajaxPostModel('/api/User/remove', 'json');
-
-	modules.Project.find = ajaxGetModel('/api/Project/find', 'json');
-	modules.Project.insert = ajaxPostModel('/api/Project/insert', 'json');
-	modules.Project.upsert = ajaxPostModel('/api/Project/upsert', 'json');
-	modules.Project.remove = ajaxPostModel('/api/Project/remove', 'json');
+	var getKeys = ajaxGetModel('/api/keys', 'json')({}, function(data){
+		data.keys.forEach(function(dbName, dbInd, dbArr){
+			modules[dbName] = {};
+			modules[dbName]['find'] = ajaxGetModel('/api/'+dbName+'/find', 'json');
+			['insert', 'upsert', 'remove'].forEach(function(cudName, cudInd, cudArr){
+				modules[dbName][cudName] = ajaxPostModel('/api/'+dbName+'/'+cudName, 'json');
+			});
+		});
+	});
 
 	return modules;
 

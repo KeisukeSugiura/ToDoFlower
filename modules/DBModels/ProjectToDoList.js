@@ -78,5 +78,4 @@ var ProjectToDoListDB = function(mongoose){
 
 }
 
-
 module.exports = ProjectToDoListDB;

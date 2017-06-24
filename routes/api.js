@@ -8,7 +8,6 @@ var router = express.Router();
 var setting = require('../modules/setting.js');
 var dbModule = require('../modules/DBModule')();
 
-
 /*
 	API for common user
 	ユーザが利用するAPI 基本的にサービス内で利用する
@@ -47,99 +46,27 @@ router.get('/super/gui', function(req,res,next){
 	res.render('super',{title:"Super", dbList:dbList});
 });
 
-/*
-	find
+router.get('/keys', function(req, res, next){
+	res.json({keys : Object.keys(dbModule.databases)});
+});
+
+/**
+ * /api/~ に各データベースのCRUD APIを提供
  */
+Object.keys(dbModule.databases).forEach(function(dbName, dbInd, dbArr){
+	
+	router.get('/'+dbName+'/find', function(req, res, next){
+		CTRModule['find'](req, res, dbName);
+	});
 
-router.get('/User/find', function(req, res, next){
-	CTRModule.find(req,res,'User');
-});
-
-router.get('/Password/find', function(req, res, next){
-	CTRModule.find(req,res,'Password');
-});
-
-router.get('/ToDoList/find', function(req, res, next){
-	CTRModule.find(req,res,'ToDoList');
-});
-
-router.get('/Project/find', function(req, res, next){
-	CTRModule.find(req,res,'Project');
-});
-
-
-/*
-	insert
- */
-
-router.post('/User/insert', function(req, res, next){
-	CTRModule.insert(req,res,'User');
-});
-
-router.post('/Password/insert', function(req, res, next){
-	CTRModule.insert(req,res,'Password');
-});
-
-router.post('/ToDoList/insert', function(req, res, next){
-	CTRModule.insert(req,res,'ToDoList');
-});
-
-router.post('/ToDoListTag/insert', function(req, res, next){
-	CTRModule.insert(req,res,'ToDoListTag');
-});
-
-router.post('/Project/insert', function(req, res, next){
-	CTRModule.insert(req,res,'Project');
-});
-
-/*
-	upsert
- */
-
-router.post('/User/upsert', function(req, res, next){
-	CTRModule.upsert(req, res, 'User');
-});
-
-router.post('/Password/upsert', function(req, res, next){
-	CTRModule.upsert(req, res, 'Password');
-});
-
-router.post('/ToDoList/upsert', function(req, res, next){
-	CTRModule.upsert(req, res, 'ToDoList');
-});
-
-router.post('/ToDoListTag/upsert', function(req, res, next){
-	CTRModule.upsert(req, res, 'ToDoListTag');
-});
-
-router.post('/Project/upsert', function(req, res, next){
-	CTRModule.upsert(req, res, 'Project');
-});
-
-/*
-	remove
- */
-
-router.post('/User/remove', function(req, res, next){
-	CTRModule.remove(req, res, 'User');
-});
-
-router.post('/Password/remove', function(req, res, next){
-	CTRModule.remove(req, res, 'Password');
-});
-
-router.post('/ToDoList/remove', function(req, res, next){
-	CTRModule.remove(req, res, 'ToDoList');
+	['insert', 'upsert', 'remove'].forEach(function(cudName, cudInd, cudArr){
+		router.post('/'+dbName+'/'+cudName, function(req, res, next){
+			CTRModule[cudName](req, res, dbName);
+		});
+	});
 
 });
 
-router.post('/ToDoListTag/remove', function(req, res, next){
-	CTRModule.remove(req, res, 'ToDoListTag');
-});
-
-router.post('/Project/remove', function(req, res, next){
-	CTRModule.remove(req, res, 'Project');
-});
 
 /*
 	control database methods
@@ -172,7 +99,6 @@ var CTRModule = (function(){
 	}
 
 	function insert(req,res,dbName){
-	    //緩衝する(空の値を防ぐ)
 	    dbModule.getSchema(dbName,function(schema){
 	      var insertItem = {};
 	      // if(dbName=='password'){
@@ -196,14 +122,11 @@ var CTRModule = (function(){
 	      // }
 	      var upsertItem = {};
 	      var schema_keys = Object.keys(schema);
-	      //c//onsole.log(schema);
 	      schema_keys.forEach(function(elm,index,arr){
 	        upsertItem[elm] = schema[elm].conv(req.body[elm]) || schema[elm].type(req.body[elm]) || schema[elm].default;
 	        console.log(req.body[elm]);
 	        console.log(schema[elm].type(req.body[elm]));
 	      });
-	     // console.log('ctr_upsert');
-	     // console.log(upsertItem);
 	      dbModule.upsert(dbName,{_id:req.body._id},upsertItem,{},function(result){
 	        res.send(req.body);
 	      });
