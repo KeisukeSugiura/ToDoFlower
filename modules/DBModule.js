@@ -18,6 +18,9 @@ function DBModule(){
 	   	databases.ToDoListTag = require("./DBModels/ToDoListTag")(mongoose);
 	   	databases.User = require("./DBModels/User")(mongoose);
 	   	databases.Project = require("./DBModels/Project")(mongoose);
+	   	databases.ProjectToDoList = require("./DBModels//ProjectToDoList")(mongoose);
+	   	databases.UserProject = require("./DBModels/UserProject")(mongoose);
+	   	databases.UserToDoList = require("./DBModels/UserToDoList")(mongoose);
 
 	    mongoose.connect(setting.DATABASE_URL);
 

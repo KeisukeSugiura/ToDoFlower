@@ -1,26 +1,24 @@
 /**
- * Projectモデルの定義、CRUDメソッドの提供
+ * UserProjectモデルの定義、CRUDメソッドの提供
  * @param {mongoose} mongoose [mongoDBのラッパー]
  */
-var ProjectDB = function(mongoose){
+var UserProjectDB = function(mongoose){
 	var Schema = mongoose.Schema;
 
 	var SchemaData = {
-		projectId : {type : String, default : "", conv : function(str){return String(str);}},
-		projectName : {type : String, default : "", conv : function(str){return String(str);}},
-		projectDetail : {type : String, default : "", conf : function(str){return String(str);}},
-		projectOwnerId : {type : String, default : "", conf : function(str){return String(str);}}
+		userId : {type : String, default : "", conv : function(str){return String(str);}},
+		projectId : {type : String, default : "", conv : function(str){return String(str);}}
 	}
 
-	var ProjectSchema = new Schema(SchemaData);
+	var UserProjectSchema = new Schema(SchemaData);
 
-	var Project = mongoose.model('Project', ProjectSchema);
+	var UserProject = mongoose.model('UserProject', UserProjectSchema);
 
 	function find(query, option, callback){
 		query = query || {};
 		option = option || {};
 		callback = callback || function(){};
-		Project.find(query, option, function(err, data) {
+		UserProject.find(query, option, function(err, data) {
             if(err) {
             	console.log(err);
         	}else{
@@ -31,7 +29,7 @@ var ProjectDB = function(mongoose){
 
 	function insert(datas, callback){
         callback = callback || function(){};
-        var insertData = new Project(datas);
+        var insertData = new UserProject(datas);
         insertData.save(function(err) {
             if(err){
                 console.log(err);
@@ -46,7 +44,7 @@ var ProjectDB = function(mongoose){
 		option = option || {};
 		callback = callback || function(){};
 		option.upsert = true;
-        Project.update(query, datas, option, function(err) {
+        UserProject.update(query, datas, option, function(err) {
           	if(err){
           		console.log(err);
           	}else{
@@ -59,7 +57,7 @@ var ProjectDB = function(mongoose){
 		query = query || {};
 		option = option || {};
 		callback = callback || function(){};
-		Project.remove(query, function(err, data) {
+		UserProject.remove(query, function(err, data) {
             if(err) {
             	console.log(err);
             }else{
@@ -71,7 +69,7 @@ var ProjectDB = function(mongoose){
 
 	return {
 		schema : SchemaData,
-		model : Project,
+		model : UserProject,
 		find : find,
 		insert : insert,
 		upsert : upsert,
@@ -81,4 +79,4 @@ var ProjectDB = function(mongoose){
 }
 
 
-module.exports = ProjectDB;
+module.exports = ProjectToDoListDB;
