@@ -9,7 +9,16 @@ var ProjectDB = function(mongoose){
 		projectId : {type : String, default : "", conv : function(str){return String(str);}},
 		projectName : {type : String, default : "", conv : function(str){return String(str);}},
 		projectDetail : {type : String, default : "", conf : function(str){return String(str);}},
-		projectOwnerId : {type : String, default : "", conf : function(str){return String(str);}}
+		projectColor : {type : String, default : "ffffff", conf : function(str){
+			var checker = str.replace(/0*1*2*3*4*5*6*7*8*9*a*b*c*d*e*f*/g,"");
+			if(str.length == 6 && checker == ""){
+				return String(str);
+			}else{
+				return "ffffff"
+			}
+		}},
+		projectOwnerId : {type : String, default : "", conf : function(str){return String(str);}},
+		completion : {type : String, default : "", conf : function(str){return String(str);}}
 	}
 
 	var ProjectSchema = new Schema(SchemaData);
