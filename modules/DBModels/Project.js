@@ -18,7 +18,13 @@ var ProjectDB = function(mongoose){
 			}
 		}},
 		projectOwnerId : {type : String, default : "", conf : function(str){return String(str);}},
-		completion : {type : String, default : "", conf : function(str){return String(str);}}
+		completion : {type : Boolean, default : false, conv : function(str){
+			if(str == 'true'){
+				return true;
+			}else{
+				return false;
+			}
+		}}
 	}
 
 	var ProjectSchema = new Schema(SchemaData);

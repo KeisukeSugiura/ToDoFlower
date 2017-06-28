@@ -6,7 +6,7 @@ var ToDoListTagDB = function(mongoose){
 	var Schema = mongoose.Schema;
 
 	var SchemaData = {
-		itemId : {type : String, default : "", conv : function(str){return String(str);}},
+		todoId : {type : String, default : "", conv : function(str){return String(str);}},
 		tag : {type : String, default : "", conv : function(str){return String(str);}}
 	}
 
