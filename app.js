@@ -5,12 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var session = require('express-session');
+var mongoStore = require('connect-mongo')(session);
+
 var ECT = require('ect');
 var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' });
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
+
+var setting = require('./modules/setting.js');
 
 var app = express();
 
@@ -27,6 +32,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    secret: 'secret',
+    store: new mongoStore({
+      url: setting.SESSION_URL,
+      autoRemove: 'interval',
+      autoRemoveInterval: 60 
+    }),
+    cookie: {
+        httpOnly: true, 
+        maxAge: 60 * 60 * 1000
+    }
+}));
 
 app.use('/', index);
 app.use('/users', users);

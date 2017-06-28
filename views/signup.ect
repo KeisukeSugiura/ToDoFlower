@@ -1,0 +1,41 @@
+<% extend 'layout_home' %>
+	<div class="container">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3>新規登録フォーム</h3>
+			</div>
+
+			<div class="panel-body">
+				<% if @err : %>
+				    <div class="alert alert-dismissible alert-danger">
+					  <button type="button" class="close" data-dismiss="alert">×</button>
+					  <strong><%= @err %></strong>
+					</div>
+				<% end %>
+				    
+				<form id="signup_form" action="/signup" method="POST">
+					<div class="form-group label-floating">
+					  	<label class="control-label" for="focusedInput3">Id</label>
+					  	<input class="form-control" name="userId" id="focusedInput3" type="text" required>
+						<!-- <button class="btn btn-success" id="login_button">login</button> -->
+					</div>
+					<div class="form-group label-floating">
+					  	<label class="control-label" for="focusedInput4">Name</label>
+					  	<input class="form-control" name="userName" id="focusedInput4" type="text" required>
+						<!-- <button class="btn btn-success" id="login_button">login</button> -->
+					</div>
+					<div class="form-group label-floating">
+						<label class="control-label" for="focusedInput5">Password</label>
+					  	<input class="form-control" name="password" id="focusedInput5" type="password" required>
+					</div>
+					<input class="btn btn-primary btn-raised" id="signup_button" style="float:right" type="submit" value="Signup">
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+      		$.material.init();
+    </script>
+<% end %>
+
+

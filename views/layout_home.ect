@@ -15,7 +15,8 @@
 
     </head>
     <body>
-        <div class="navbar navbar-warning">
+
+		<div class="navbar navbar-warning">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-warning-collapse">
@@ -27,11 +28,13 @@
 		    </div>
 		    <div class="navbar-collapse collapse navbar-warning-collapse">
 		      <ul class="nav navbar-nav navbar-right">
-		    	<li><a href="/logout">ログアウト</a></li>
+		        <li><a href="/login">ログイン</a></li>
+		    	<li><a href="/signup">新規登録</a></li>
 		      </ul>
 		    </div>
 		  </div>
 		</div>
+
 
         <!-- Twitter Bootstrap -->
 	    <script src="/javascripts/ex/bootstrap.min.js"></script>
@@ -43,7 +46,7 @@
 	    <script>
       		$.material.init();
 	    </script>
-
+		
         <% content %>
 
     </body>
