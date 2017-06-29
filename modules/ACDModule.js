@@ -236,8 +236,38 @@ var ACDModule = (function(){
 
 	}
 
+	/**
+	 * 新規ToDoの追加
+	 */
+	 function insertToDo(todoData, callback){
+	 	// todo, 追加する対象のprojectId, userId
+	 	// 更新対象はToDo, UserToDo, ProjectToDo, ToDoTag
+	 }
 
+	 /**
+	  * ToDoの上書き
+	  */
+	  function upsertToDo(todoData, callback){
+	 	// todo, 追加する対象のprojectId, userId
+	 	// 更新対象はToDo, UserToDo, ProjectToDo, ToDoTag
 
+	  }
+
+	 /**
+	  * 新規プロジェクトの追加
+	  */
+	 function insertProject(projectData, callback){
+	 	// project, 追加する対象のuserId
+	 	// 更新対象はproject, UserProject
+	 }
+
+	 /**
+	  * プロジェクトの上書き
+	  */
+	  function upsertProject(projectData, callback){
+	 	// 更新対象はproject, UserProject
+	  	
+	  }
 
 	return {
 		getUserId : getUserId,
