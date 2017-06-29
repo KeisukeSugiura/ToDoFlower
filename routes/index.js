@@ -4,6 +4,8 @@ var express = require('express');
 var router = express.Router();
 var dbModule = require("../modules/DBModule")();
 var loginCheckModule = require("../modules/LoginCheckModule");
+var ACDModule = require('../modules/ACDModule');
+var CTRModule = require('../modules/CTRModule');
 
 
 /**
@@ -47,7 +49,8 @@ router.post('/login', loginCheckModule.loginCheckHome, function(req, res, next){
 				console.log(userData);
 				var session = {
 					id : userId,
-					name : userData.userName
+					name : userData.userName,
+					apikey : passwordDatas[0].apikey
 				};
 				req.session.user = session;
 				res.redirect('/users');
@@ -74,7 +77,14 @@ router.post('/signup', loginCheckModule.loginCheckHome, function(req, res, next)
 			res.render('signup',{title:'Signup', err:'Sorry, "'+userId+'" is already used.'})
 		}else{
 			// 登録
-			
+			ACDModule.insertInitialUserData({userId:userId, userName:userName, password:password}, function(){
+				var session = {
+					id : userId,
+					name : userName
+				};
+				req.session.user = session;
+				res.redirect('/users');
+			});
 		}
 	});
 });

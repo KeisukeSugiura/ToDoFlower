@@ -7,29 +7,50 @@ var express = require('express');
 var router = express.Router();
 var setting = require('../modules/setting.js');
 var dbModule = require('../modules/DBModule')();
+var loginCheckModule = require("../modules/LoginCheckModule");
 var ACDModule = require('../modules/ACDModule');
 var CTRModule = require('../modules/CTRModule');
 
 /*
 	API for common user
 	ユーザが利用するAPI 基本的にサービス内で利用する
-	ユーザデータを必ずクエリに入れるため、対象は自身のデータに絞られる
+	セッションデータを必ずクエリに入れるため、対象は自身のデータに絞られる
  */
 
-router.get('/', function(req, res, next) {
-  res.json({data:"can't use this url "});
+router.get('/', loginCheckModule.apikeyCheck, function(req, res, next) {
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+  	
+  	res.json({data:"can't use this url "});
 });
 
-router.get('/todo', function(req, res, next) {
-	// get user data with query
-	// {userId, session...}
-  res.json({data:"can't use this url"});
-});
 
-router.get('/search', function(req, res, next) {
-	// get user data with query
-	// {userId, query, session...}
-  res.json({data:"can't use this url"});
+/**
+ * 	deplicate
+ * 	sessionを生成する	                                                                                                                    [description]
+ */
+router.get('/login', loginCheckModule.apikeyCheck, function(req, res, next){
+	var userId = req.query.userId;
+	var password = req.query.password;
+	var loginQuery = {'$and' : [{userId:userId},{password:password}]};
+
+	dbModule.find('Password',loginQuery,{},function(passwordDatas){
+		if(passwordDatas.length != 0){
+			dbModule.find('User',{userId:userId},{},function(userDatas){
+				var userData = userDatas[0];
+				console.log(userData);
+				var session = {
+					id : userId,
+					name : userData.userName,
+					apikey : passwordDatas[0].apikey
+				};
+				req.session.user = session;
+				res.json(session);
+			});
+		}else{
+			// 見つからなければ注意
+			res.render({err:"Failed to login."})
+		}
+	});
 });
 
 /**
@@ -39,86 +60,128 @@ router.get('/search', function(req, res, next) {
  * @param  {[type]} next){} [description]
  * @return {[type]}           [description]
  */
-router.get('/todo/incomplete', function(req, res, next){
-	/*
-		ToDoListにprojectColorを乗っけたデータが欲しい
-		{
-			todoList : [
-				{
-					ToDoList + projectColor
-				},
-				{
-					ToDoList + projectColor
-				}
-	
-			],
-			userData : {
-				User
-			}
-		}
-	 */
-	var userId = req.session.userId;
-	var userName = req.session.userName;
-	ACDModule.getUserData(req, function(datas){
-		var reTodoList = datas.todoListData.filter(function(elm, ind, arr){
-			return !elm.completion;
-		}).map(function(elm, ind, arr){
-			var reObject = Object.assign({}, elm._doc);
-		});
+router.get('/todo/incomplete', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		if(userIdObj.userId){
+			ACDModule.getAllData(userIdObj.userId, function(datas){
 
-		res.json({userData:data.userData, todoList:reTodoList});
+				var todoList = [];
+				datas.allData.project.map(function(proElm, proInd, proArr){
+					todoList = todoList.concat(proElm.todoList);
+					return true;
+				});
+
+				var reTodoList = todoList.filter(function(elm, ind, arr){
+					return !(elm.completion);
+				});
+				res.json({userData:datas.userData, todoList:reTodoList})
+
+			});
+		}else{
+			res.json(userIdObj);
+		}
 	});
 });
 
-router.get('/todo/complete', function(req, res, next){
+router.get('/todo/complete', loginCheckModule.apikeyCheck, function(req, res, next){
+  	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		if(userIdObj.userId){
+			ACDModule.getAllData(userIdObj.userId, function(datas){
+
+				var todoList = [];
+				datas.allData.project.map(function(proElm, proInd, proArr){
+					todoList = todoList.concat(proElm.todoList);
+					return true;
+				});
+
+				var reTodoList = todoList.filter(function(elm, ind, arr){
+					return elm.completion;
+				});
+				res.json({userData:datas.userData, todoList:reTodoList})
+
+			});
+		}else{
+			res.json(userIdObj);
+		}
+	});
+});
+
+router.get('/todo/all', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		if(userIdObj.userId){
+			ACDModule.getAllData(userIdObj.userId, function(datas){
+
+				var todoList = [];
+				datas.allData.project.map(function(proElm, proInd, proArr){
+					todoList = todoList.concat(proElm.todoList);
+					return true;
+				});
+				res.json({userData:datas.userData, todoList:todoList})
+
+			});
+		}else{
+			res.json(userIdObj);
+		}
+	});
+});
+
+router.get('/todo/detail', loginCheckModule.apikeyCheck, function(req, res, next){
+  	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		if(userIdObj.userid){
+			ACDModule.getToDoList(req.query.query, function(todoListDatas){
+				res.json({todoList:todoListDatas});
+			});
+		}else{
+			res.json(userIdObj);
+		}
+	});
+});
+
+router.get('/project/incomplete', loginCheckModule.apikeyCheck, function(req, res, next){
+  	res.json({data:"can't use this url "});
 
 });
 
-router.get('/todo/all', function(req, res, next){
+router.get('/project/complete', loginCheckModule.apikeyCheck, function(req, res, next){
+  	res.json({data:"can't use this url "});
 
 });
 
-router.get('/todo/one', function(req, res, next){
+router.get('/project/all', loginCheckModule.apikeyCheck, function(req, res, next){
+  	res.json({data:"can't use this url "});
 
 });
 
-router.get('/project/incomplete', function(req, res, next){
+router.get('/project/detail', loginCheckModule.apikeyCheck, function(req, res, next){
+  	res.json({data:"can't use this url "});
 
 });
 
-router.get('/project/complete', function(req, res, next){
-
+router.get('/userData', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		if(userIdObj.userId){
+			ACDModule.getAllData(userIdObj.userId, function(datas){
+				res.json({userData:datas.userData, allData:datas.allData});
+			});
+		}else{
+			res.json(userIdObj);
+		}
+	});
 });
 
-router.get('/project/all', function(req, res, next){
-
-});
-
-router.get('/project/one', function(req, res, next){
-
-});
-
-router.get('/userData',function(req, res, next){
-
-});
-
-router.get('/userAlldata', function(req, res, next){
-	var userId = req.session.userId;
-	if(userId){
-		ACDModule.getUserData(req.session.userId, function(data){
-			res.json(data);
-		});	
-	}else{
-		res.json({});
-	}
-	
-});
-
-router.get('/test', function(req, res, next){
+router.get('/test', loginCheckModule.apikeyCheck, function(req, res, next){
 	var userId = 'user1';
-	ACDModule.getUserData(req.session.userId, function(data){
-		console.log(data);
-		res.json(data);
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	console.log("aafadlkfajsdlfkajdlkfjalsdkjf");
+	console.log(apikey);
+	ACDModule.getAllData(userId, function(datas){
+		console.log(datas);
+		res.json(datas);
 	});
 });
 
