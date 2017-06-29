@@ -14,11 +14,112 @@ var ACDModule = (function(){
 		return convertObject;
 	}
 
+	function generateUniqueId(){
+		return Math.random().toString(36).slice(-8);
+	}
+
+	/**
+	 * apikeyからユーザidを取得する
+	 * @return {[type]}            [description]
+	 */
+	function getUserId(apikey, callback){
+		dbModule.find('Password', {apikey:apikey}, {}, function(userDatas){
+			if(userDatas.length != 0){
+				var userData = userDatas[0];
+				callback({userId:userData.userId});
+			}else{
+				callback({err:"Failed to get user with this apikey."})
+			}
+		})
+	}
+
+	/**
+	 * todoIdでtodolistを検索して返却する
+	 */
+	function getToDoListWithId(todoId, callback){
+		//projecttodolist -> project[0]
+		
+		dbModule.find('ProjectToDoList', {todoId:todoId}, {}, function(todoListIdList){
+			if(todoListIdList.length != 0){
+
+				dbModule.find('Project', {projectId:todoListIdList[0].projectId}, {}, function(projectDatas){
+					var projectElm = projectDatas[0];
+					dbModule.find('ToDoList', {todoId:todoId}, {}, function(todoListDatas){
+						dbModule.find('ToDoListTag', todoQuery, {}, function(todoListTagDatas){
+
+							var todoItem = todoListDatas[0];
+							var reTodoItem = Object.assign({}, todoItem._doc);
+							reTodoItem.tag = todoListTagDatas.filter(function(tagElm){
+								return tagElm.todoId == todoItem.todoId;
+							});
+							reTodoItem.projectColor = projectElm.projectColor;
+							reTodoItem.projectName = projectElm.projectName;
+							reTodoItem.projectId = projectElm.projectId;
+
+							callback({allData:userObj[0], userData:userData[0], projectData:projectDatas, todoListData:todoListDatas});
+						}); // ToDoListTag
+					}); // ToDoList
+				});// Project
+			}else{
+				callback({err:"Faild to find todoList data."})
+			}
+		}); // ProjectToDoList
+	}
+
+	/**
+	 * projectIdでprojectを検索して返却する
+	 */
+	function getProjectWithId(projectId, callback){
+		dbModule.find('Project', {projectId:projectId}, {}, function(projectDatas){
+
+			dbModule.find('ProjectToDoList', {projectId:projectId}, {}, function(todoListIdList){
+				
+				var todoQueryOrArray = todoListIdList.map(function(elm, ind, arr){
+					return {'todoId' : elm.todoId};
+				});
+
+				var todoQuery = {'$or' : todoQueryOrArray};
+
+				dbModule.find('ToDoList', todoQuery, {}, function(todoListDatas){
+					dbModule.find('ToDoListTag', todoQuery, {}, function(todoListTagDatas){
+						var reProject = projectDatas.map(function(projectElm){
+							var reProjectElm = Object.assign({}, projectElm._doc);
+							reProjectElm.todoList = todoListIdList.filter(function(todoIdElm){
+
+								return todoIdElm.projectId == projectElm.projectId;
+
+							}).map(function(todoIdElm){
+
+								// todoIdはuidなので一つしか当てはまらない
+								var todoItem = todoListDatas.filter(function(todoElm){
+									return todoElm.todoId == todoIdElm.todoId;
+								})[0];
+								var reTodoItem = Object.assign({}, todoItem._doc);
+								reTodoItem.tag = todoListTagDatas.filter(function(tagElm){
+									return tagElm.todoId == todoItem.todoId;
+								});
+								reTodoItem.projectColor = projectElm.projectColor;
+								reTodoItem.projectName = projectElm.projectName;
+								reTodoItem.projectId = projectElm.projectId;
+
+								return reTodoItem;
+							});
+
+							return reProjectElm;
+						});
+
+						callback({projectData:reProject});
+					}); // ToDoListTag
+				}); // ToDoList
+			}); // ProjectToDoList
+		}); // Project
+	}
+
 	/**
 	 * 特定のユーザが保持するデータを整形して返却するメソッドcallback(datas)
 	 * @return {allData, userData, projectData, todoListData}
 	 */
-	function getUserData(userId, callback){
+	function getAllData(userId, callback){
 		/*
 			特定のユーザが保持するデータを整形して返却するメソッド
 			user : {
@@ -44,11 +145,9 @@ var ACDModule = (function(){
 				]
 			}
 		 */
-		//var userId = req.session.userId;
-		//var userName = req.session.userName;
 
 		dbModule.find('User', {'userId': userId}, {}, function(userData){
-			if(userData.length != 0){
+			if(userData.length == 1){
 				dbModule.find('UserProject', {'userId' : userId}, {}, function(projectIdList){
 					var projectQueryOrArray = projectIdList.map(function(elm, ind, arr){
 						return {'projectId' : elm.projectId};
@@ -72,20 +171,25 @@ var ACDModule = (function(){
 										var reUserElm = Object.assign({}, userElm._doc);
 										reUserElm.project = projectDatas.map(function(projectElm){
 											var reProjectElm = Object.assign({}, projectElm._doc);
-											reProjectElm.todoList = todoListIdList.map(function(todoIdElm){
+											reProjectElm.todoList = todoListIdList.filter(function(todoIdElm){
 
-												var todoList = todoListDatas.filter(function(todoElm){
-													
+												return todoIdElm.projectId == projectElm.projectId;
+
+											}).map(function(todoIdElm){
+
+												// todoIdはuidなので一つしか当てはまらない
+												var todoItem = todoListDatas.filter(function(todoElm){
 													return todoElm.todoId == todoIdElm.todoId;
-												
-												}).map(function(todoElm){
-													var reTodoElm = Object.assign({},todoElm._doc);
-													reTodoElm.tag = todoListTagDatas.filter(function(tagElm){
-														return tagElm.todoId == todoElm.todoId;
-													});
-													return reTodoElm;
+												})[0];
+												var reTodoItem = Object.assign({}, todoItem._doc);
+												reTodoItem.tag = todoListTagDatas.filter(function(tagElm){
+													return tagElm.todoId == todoItem.todoId;
 												});
-												return todoList;
+												reTodoItem.projectColor = projectElm.projectColor;
+												reTodoItem.projectName = projectElm.projectName;
+												reTodoItem.projectId = projectElm.projectId;
+
+												return reTodoItem;
 											});
 
 											return reProjectElm;
@@ -94,7 +198,7 @@ var ACDModule = (function(){
 										return reUserElm;
 									});
 
-									callback({allData:userObj, userData:userData, projectData:projectDatas, todoListData:todoListDatas});
+									callback({allData:userObj[0], userData:userData[0], projectData:projectDatas, todoListData:todoListDatas});
 								}); // ToDoListTag
 							}); // ToDoList
 						}); // ProjectToDoList
@@ -107,9 +211,39 @@ var ACDModule = (function(){
 		}); // User
 	}
 
+
+	/**
+	 * 新規ユーザ登録
+	 * @param  {[type]}   userData [description]
+	 * @param  {Function} callback [description]
+	 * @return {[type]}            [description]
+	 */
+	function insertInitialUserData(userData, callback){
+		/*
+			Password, User, Project, UserProjectにデータをインサートする
+		 */
+		var uniqueProjectId = "p"+generateUniqueId();
+		var uniqueApikey = "f"+generateUniqueId();
+		dbModule.insert("Password", {userId:userData.userId, password:userData.password, apikey:uniqueApikey}, function(){
+			dbModule.insert("User", {userId:userData.userId, userName:userData.userName}, function(){
+				dbModule.insert("Project", {projectId:uniqueProjectId, projectName: "default", projectDetail:"This project is default project.", projectColor:"ffffff", projectOwnerId:"ToDoFlower", completion:false}, function(){
+					dbModule.insert("UserProject", {userId:userData.userId, projectId:uniqueProjectId}, function(){
+						callback();
+					});
+				});
+			});
+		});
+
+	}
+
+
+
+
 	return {
-		getUserData : getUserData,
-		convertArrayToObject : convertArrayToObject
+		getUserId : getUserId,
+		getAllData : getAllData,
+		convertArrayToObject : convertArrayToObject,
+		insertInitialUserData : insertInitialUserData
 	};
 
 })();

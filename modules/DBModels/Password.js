@@ -7,7 +7,8 @@ var PasswordDB = function(mongoose){
 
 	var SchemaData = {
 		userId : {type : String, default : "", conv : function(str){return String(str);}},
-		password : {type : String, default : "", conv : function(str){return String(str);}}
+		password : {type : String, default : "", conv : function(str){return String(str);}},
+		apikey : {type : String, default : "", conv : function(str){return String(str);}}
 	}
 
 	var PasswordSchema = new Schema(SchemaData);

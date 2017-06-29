@@ -18,9 +18,20 @@ var LoginCheckModule = (function(){
 		}
 	}
 
+	// for application interface
+	function apikeyCheck(req, res, next){
+		var apikey = req.body.apikey || req.query.apikey;
+		if(apikey || req.session.user){
+			next();
+		}else{
+			res.json({err:'Faild to get api.'})
+		}
+	}
+
 	return {
 		loginCheck : loginCheck,
-		loginCheckHome : loginCheckHome
+		loginCheckHome : loginCheckHome,
+		apikeyCheck : apikeyCheck
 	}
 
 })();
