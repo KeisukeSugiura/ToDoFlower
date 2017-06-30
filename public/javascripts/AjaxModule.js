@@ -77,6 +77,13 @@ var AjaxModule = (function(){
 	 modules.postInsertProject = ajaxPostModel('/api/project/insert', 'json');
 	 modules.postUpsertProject = ajaxPostModel('/api/project/upsert', 'json');
 
+	 modules.postRemoveToDo = ajaxPostModel('/api/todo/remove', 'json');
+	 modules.postCompleteToDo = ajaxPostModel('/api/todo/complete', 'json');
+	 modules.postRemoveProject = ajaxPostModel('/api/project/remove', 'json');
+	 modules.postCOmpleteproject = ajaxPostModel('/api/project/complete', 'json');
+
+	 modules.getToDoListWithTag = ajaxGetModel('/api/todo/search/tag', 'json');
+
 	/*
 		crud api for super user
 		url example : /api/User/find, /api/Password/upsert...

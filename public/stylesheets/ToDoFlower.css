@@ -80,6 +80,8 @@ body {
 	-ms-transform: translateY(-50%) translateX(-50%);
 
 	box-shadow:0px 0px 10px -2px #222222;
+	
+	cursor:pointer;
 
 	text-align: center;
 	background-color: #ff0000;
@@ -130,7 +132,7 @@ body {
 	text-align: center;
 	
 	box-shadow:0px 0px 10px -2px #222222;
-
+	cursor:pointer;
 	background-color: #ffff00;
 	color: #cccccc;
 }

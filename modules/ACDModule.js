@@ -317,7 +317,48 @@ var ACDModule = (function(){
 	  function upsertToDo(todoData, callback){
 	 	// todo, 追加する対象のprojectId, userId
 	 	// 更新対象はToDo, UserToDo, ProjectToDo, ToDoTag
+	 	var todoListObj = {
+	 		todoId:todoData.todoId,
+	 		publisherId:todoData.userData.userId,
+	 		executorId:todoData.userData.userId,
+	 		inputTime : new Date(),
+	 		limitTime : new Date(todoData.limitTime),
+	 		endTime : new Date(),
+	 		priority : todoData.priority,
+	 		title : todoData.title,
+	 		completion : false
+	 	}
 
+	 	var userToDoObj = {
+	 		userId : todoData.userData.userId,
+	 		todoId : todoData.todoId
+	 	}
+
+	 	var projectTodoObj = {
+	 		projectId : todoData.projectId,
+	 		todoId : todoData.todoId
+	 	}
+
+	 	var todoTagList = todoData.tag.map(function(elm, ind, arr){
+	 		return {
+	 			todoId : todoData.todoId,
+	 			tag : elm
+	 		}
+	 	});
+
+	 	dbModule.upsert('ToDoList',{todoId:todoListObj.todoId},todoListObj,{},function(){
+	 		dbModule.upsert('ProjectToDoList',{todoId:projectTodoObj.todoId},projectTodoObj,{},function(){
+	 			dbModule.remove('ToDoListTag',{todoId:todoData.todoId},{},function(result){
+ 					todoTagList.forEach(function(elm, ind, arr){
+	 					dbModule.insert('ToDoListTag', elm, function(){
+
+	 					});
+	 				});
+	 				callback()
+	 			})
+	 			
+	 		})
+	 	})
 	  }
 
 	 /**
@@ -363,7 +404,115 @@ var ACDModule = (function(){
 	  */
 	  function upsertProject(projectData, callback){
 	 	// 更新対象はproject, UserProject
+	 	var projectObj = {
+			projectId : projectData.projectId,
+			projectName : projectData.projectName,
+			projectDetail : projectData.projectDetail,
+			projectColor : projectData.projectColor,
+			projectOwnerId : projectData.userId,
+			completion : false
+		}
 
+		var userProjectObj = {
+			userId : projectData.userId,
+			projectId : projectData.projectId
+		}
+
+
+	 	dbModule.upsert("Project",{projectId:projectData.projectId}, projectObj,{}, function(){
+			callback();
+		});
+
+
+	  }
+
+	  function removeProject(projectData, callback){
+	  	var targetProjectId = projectData.projectId
+	  	dbModule.remove("Project", {projectId:targetProjectId},{},function(){
+	  		dbModule.remove("UserProject", {projectId:targetProjectId}, {}, function(){
+	  			callback()
+	  		})
+	  	})
+	  }
+
+	  function removeToDo(todoData, callback){
+	  	var targetToDoId = todoData.todoId
+	  	dbModule.remove("ToDoList",{todoId:targetToDoId},{},function(){
+	  		dbModule.remove("ProjectToDoList",{todoId:targetToDoId},{},function(){
+	  			dbModule.remove("UserToDoList",{todoId:targetToDoId},{},function(){
+	  				dbModule.remove("ToDoListTag",{todoId:targetToDoId},{},function(){
+	  					callback()
+	  				})
+	  			})
+	  		})
+	  	})
+	  }
+
+
+	  function completeProject(projectData, callback){
+	  	var targetProjectId = projectData.projectId
+	  	dbModule.find("Project",{projectId:targetProjectId},{},function(datas){
+	  		if(datas.length > 0){
+	  			var targetObj = Object.assign({}, datas[0]._doc);
+	  			targetObj.completion = true
+	  			dbModule.upsert("Project",{projectId:targetProjectId},targetObj,{},function(){
+	  				callback()
+	  			})
+	  		}else{
+	  			callback()
+	  		}
+	  	})
+
+	  }
+
+	  function completeToDo(todoData, callback){
+	  	var targetToDoId = todoData.todoId
+	  	dbModule.find("ToDoList",{todoId:targetToDoId},{},function(datas){
+	  		if(datas.length > 0){
+	  			var targetObj = Object.assign({}, datas[0]._doc)
+	  			targetObj.completion = true
+
+	  			dbModule.upsert("ToDoList",{todoId:targetToDoId},targetObj,{},function(){
+	  				callback()
+	  			})
+	  		}else{
+	  			callback()
+	  		}
+	  	})
+	  }
+
+	  function searchToDoWithTag(todoQuery, callback){
+	  	dbModule.find("ToDoListTag", {tag:todoQuery.tag}, {}, function(todoIdList){
+	  		if(todoIdList.length > 0){
+	  			var orQueryArray = todoIdList.map(function(elm, ind, arr){
+	  				return {todoId:elm.todoId}
+	  			});
+	  			var orQuery = {'$or':orQueryArray}
+	  			var andQuery = {'$and': [{executorId:todoQuery.userId}, {completion:false}, orQuery]};
+	  			dbModule.find("ToDoList",andQuery,{},function(todoListDatas){
+	  				var tagOrQueryArray = todoListDatas.map(function(elm,ind,arr){
+	  					return {todoId:elm.todoId}
+	  				});
+	  				var tagOrQuery = {'$or':tagOrQueryArray}
+
+	  				dbModule.find("ToDoListTag",tagOrQuery,{}, function(todoTagList){
+	  					var todoListObj = todoListDatas.map(function(elm, ind, arr){
+	  						var reToDo = Object.assign({}, elm._doc)
+	  						reToDo.tag = todoTagList.filter(function(felm, find, farr){
+	  							return elm.todoId == felm.todoId
+	  						});
+	  						return reToDo
+	  					});
+
+	  					callback(todoListObj)
+
+	  				});
+	  			})
+
+	  		}else{
+	  			callback({todoList:[]});
+	  		}
+	  	});
 	  }
 
 	return {
@@ -374,7 +523,12 @@ var ACDModule = (function(){
 		insertToDo : insertToDo,
 		upsertToDo : upsertToDo,
 		insertProject : insertProject,
-		upsertProject : upsertProject
+		upsertProject : upsertProject,
+		removeProject : removeProject,
+		completeProject : completeProject,
+		removeToDo : removeToDo,
+		completeToDo : completeToDo,
+		searchToDoWithTag : searchToDoWithTag
 	};
 
 })();

@@ -16,34 +16,7 @@ router.get('/', loginCheckModule.loginCheck, function(req, res, next) {
 });
 
 router.get('/menu', loginCheckModule.loginCheck, function(req, res, next){
-	res.render('user_menu',{title:"ToDoFlower", userName:req.session.user.name});
-});
-
-
-router.get('/todo', loginCheckModule.loginCheck, function(req, res, next){
-	res.render('todo',{title: 'ToDoFlower', userName:req.session.user.name});
-})
-
-router.get('/todo/detail', loginCheckModule.loginCheck, function(req, res, next){
-	res.render('todo_detail',{title: 'ToDoFlower', userName:req.session.user.name});
-});
-
-router.get('/todo/all', loginCheckModule.loginCheck, function(req, res, next){
-	res.render('todo_all',{title: 'ToDoFlower', userName:req.session.user.name});
-});
-
-
-
-router.get('/project', loginCheckModule.loginCheck, function(req, res, next){
-	res.render('project',{title: 'ToDoFlower', userName:req.session.user.name});
-});
-
-router.get('/project/detail', loginCheckModule.loginCheck, function(req, res, next){
-	res.render('project_detail',{title: 'ToDoFlower', userName:req.session.user.name});
-});
-
-router.get('/project/all', loginCheckModule.loginCheck, function(req, res, next){
-	res.render('project_all',{title: 'ToDoFlower', userName:req.session.user.name});
+	res.render('user_menu',{title:"ToDoFlower", userName:req.session.user.name, apikey:req.session.user.apikey, id:req.session.user.id});
 });
 
 router.get('/search', loginCheckModule.loginCheck, function(req, res, next){

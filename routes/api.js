@@ -37,7 +37,7 @@ router.get('/login', loginCheckModule.apikeyCheck, function(req, res, next){
 		if(passwordDatas.length != 0){
 			dbModule.find('User',{userId:userId},{},function(userDatas){
 				var userData = userDatas[0];
-				console.log(userData);
+				//console.log(userData);
 				var session = {
 					id : userId,
 					name : userData.userName,
@@ -179,7 +179,7 @@ router.get('/userData/incomplete', loginCheckModule.apikeyCheck, function(req, r
 	ACDModule.getUserId(apikey, function(userIdObj){
 		if(userIdObj.userId){
 			ACDModule.getAllData(userIdObj.userId, function(datas){
-				console.log(datas)
+				//console.log(datas)
 				var sendObj = Object.assign({}, datas.allData);
 				sendObj.project = sendObj.project.filter(function(elm, ind, arr){
 					return !(elm.completion);
@@ -198,6 +198,53 @@ router.get('/userData/incomplete', loginCheckModule.apikeyCheck, function(req, r
 	});
 });
 
+// router.get('/todo/search/tag', loginCheckModule.apikeyCheck, function(req, res, next){
+// 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+// 	ACDModule.getUserId(apikey, function(userIdObj){
+// 		if(userIdObj.userId){
+// 			var queryObj = Object.assign({}, req.query);
+// 			queryObj.userId = userIdObj.userId
+// 			ACDModule.searchToDoWithTag(queryObj,function(result){
+// 				res.json({userData:{userId:userIdObj.userId, userName:req.session.user.name}, todoList:result})
+// 			})
+// 		}else{
+// 			res.json(userIdObj);
+// 		}
+// 	});
+// })
+
+router.get('/todo/search/tag', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		if(userIdObj.userId){
+			ACDModule.getAllData(userIdObj.userId, function(datas){
+
+				var todoList = [];
+				datas.allData.project.map(function(proElm, proInd, proArr){
+					todoList = todoList.concat(proElm.todoList);
+					return true;
+				});
+
+				var reTodoList = todoList.filter(function(elm, ind, arr){
+					var tagList = elm.tag
+					var tagNameList = tagList.map(function(telm, tind, tarr){
+						return telm.tag
+					})
+					return (!(elm.completion) && (tagNameList.indexOf(req.query.tag) != -1));
+				});
+				res.json({userData:datas.userData, todoList:reTodoList})
+
+			});
+		}else{
+			res.json(userIdObj);
+		}
+	});
+});
+
+/**
+ * POST methods
+ */
+
 router.post('/todo/insert', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
@@ -214,13 +261,13 @@ router.post('/todo/insert', loginCheckModule.apikeyCheck, function(req, res, nex
 router.post('/todo/upsert', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
-		// var insertData = Object.assign({}, req.body);
-		// console.log(insertData);
-		// insertData.userData = userIdObj;
-		// insertData.tag = insertData.tag || []
-		// ACDModule.insertToDo(insertData, function(){
-		// 	res.json({success:true});
-		// });
+		var insertData = Object.assign({}, req.body);
+		console.log(insertData);
+		insertData.userData = userIdObj;
+		insertData.tag = insertData.tag || []
+		ACDModule.upsertToDo(insertData, function(){
+			res.json({success:true});
+		});
 	});
 });
 
@@ -237,7 +284,66 @@ router.post('/project/insert', loginCheckModule.apikeyCheck, function(req, res, 
 });
 
 router.post('/project/upsert', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		var insertData = Object.assign({}, req.body);
+		console.log(insertData);
+		insertData.userId = userIdObj.userId;
+		ACDModule.upsertProject(insertData, function(){
+			res.json({success:true});
+		});
+	});
+});
 
+router.post('/todo/remove', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		var insertData = Object.assign({}, req.body);
+		console.log(insertData);
+		insertData.userData = userIdObj;
+		insertData.tag = insertData.tag || []
+		ACDModule.removeToDo(insertData, function(){
+			res.json({success:true});
+		});
+	});
+});
+
+router.post('/todo/complete', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		var insertData = Object.assign({}, req.body);
+		console.log(insertData);
+		insertData.userData = userIdObj;
+		insertData.tag = insertData.tag || []
+		ACDModule.completeToDo(insertData, function(){
+			res.json({success:true});
+		});
+	});
+});
+
+
+router.post('/project/remove', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		var insertData = Object.assign({}, req.body);
+		console.log(insertData);
+		insertData.userId = userIdObj.userId;
+		ACDModule.removeProject(insertData, function(){
+			res.json({success:true});
+		});
+	});
+});
+
+router.post('/project/complete', loginCheckModule.apikeyCheck, function(req, res, next){
+	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
+	ACDModule.getUserId(apikey, function(userIdObj){
+		var insertData = Object.assign({}, req.body);
+		console.log(insertData);
+		insertData.userId = userIdObj.userId;
+		ACDModule.completeProject(insertData, function(){
+			res.json({success:true});
+		});
+	});
 });
 
 

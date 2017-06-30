@@ -1,4 +1,6 @@
 <% extend 'layout' %>
+	<div id = "flower_component_div">
+	</div>
 
 	<h2 style="margin-left:5%">ToDo Flower Including All</h2>
 	<div id="flower_div" class="flower_div">
@@ -24,7 +26,6 @@
 	<div id="project_flower_div" class="flower_div">
 		
 	</div>
-
 	<div class="edit_button_group">
 		<a id="input_todo_button" class="btn btn-warning btn-fab" data-toggle="modal" data-target="#inputToDoModal"><i class="material-icons">add</i></a>
 	</div> 
@@ -168,15 +169,152 @@
 
 
 	<!-- todo 更新フォーム	 -->
+	<div class="modal" id="updateToDoModal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	        <h4 class="modal-title">Detail of this ToDo</h4>
+	        <h5 id="update_todo_id_text"></h5>
+	      </div>
+	      <div class="modal-body">
+			<form class="form-horizontal">
+				<fieldset>
+				  <div class="form-group">
+						<row>
+						  <label for="update_todo_title_input" class="col-md-2 control-label">Title</label>
+					      <div class="col-md-10">
+					        <input type="text" class="form-control" id="update_todo_title_input" placeholder="ToDo Title">
+					      </div>
+						</row>
+					</div>
+					<div class="form-group">
+				     	<row>
+				     		<label for="update_todo_project_input" class="col-md-2 control-label">Project</label>
+				     		<div class="col-md-10">
+				     			<select id="update_todo_project_input" class="form-control">
+				
+						        </select>
+				     		</div>
+				     	</row>
+				    </div>
+					<div class="form-group">
+						<row>
+							<label for="update_todo_date_input" class="col-md-2 control-label">Time Limit</label>
+							<div class="col-md-10">
+								<input type="date" class="form-control" id="update_todo_date_input" placeholder="Time Limit">
+							</div>
+						</row>
+					</div>
+					<div class="form-group">
+				     	<row>
+				     		<label for="update_todo_priority_input" class="col-md-2 control-label">Priority</label>
+				     		<div class="col-md-10">
+				     			<select id="update_todo_priority_input" class="form-control">
+						          <option>1</option>
+						          <option>2</option>
+						          <option>3</option>
+						          <option>4</option>
+						          <option>5</option>
+						        </select>
+				     		</div>
+				     	</row>
+				    </div>
+				    <div class="form-group">
+						<row>
+						  <label for="update_todo_tag_input" class="col-md-2 control-label">Tag</label>
+					      <div class="col-md-8">
+					        <input type="text" class="form-control" id="update_todo_tag_input" placeholder="ToDo Tag">
+					      </div>
+					      <div class="col-md-2">
+							<input type="button" class="btn btn-default" id="update_todo_tag_button" value="add">
+					      </div>
+						</row>
+						<row>
+							<div id="update_todo_tag_list" class="col-md-12">
+								<!-- <row>
+							 		 <label class="col-md-10"></label>
+							 		 <button class="col-md-2"></div>
+								</row> -->
+							</div>
+						<row>
+					</div>
+				</fieldset>
+			</form>
+	      </div>
 
-	<!-- project更新フォーム -->
+
+	      <div class="modal-footer">
+	        <input type="button" class="btn btn-default" data-dismiss="modal" value="Close">
+	        <input type="button" class="btn btn-primary" data-dismiss="modal" id="update_todo_update_button" value="Update">
+	        <input type="button" class="btn btn-warning" data-dismiss="modal" id="update_todo_complete_button" value="Complete">
+	        <input type="button" class="btn btn-danger" data-dismiss="modal" id="update_todo_delete_button" value="Delete">
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+
+	<!-- project 更新フォーム -->
+	<div class="modal" id="updateProjectModal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	        <h4 class="modal-title">Detail of This Project</h4>
+	        <h5 id="update_project_id_text"></h5>
+	      </div>
+	      <div class="modal-body">
+			<form class="form-horizontal">
+				<fieldset>
+					<div class="form-group">
+						<row>
+						  <label for="update_project_name_input" class="col-md-2 control-label">Project Name</label>
+					      <div class="col-md-10">
+					        <input type="text" class="form-control" id="update_project_name_input" placeholder="Project Name">
+					      </div>
+						</row>
+				 	</div>
+					<div class="form-group">
+						<row>
+						  <label for="update_project_color_input" class="col-md-2 control-label">Project Color</label>
+					      <div class="col-md-10">
+					        <input type="text" class="form-control" id="update_project_color_input" placeholder="Project Color like ffffff" maxlength='6'>
+					      </div>
+						</row>
+				  	</div>
+				  	<div class="form-group">
+				      <label for="update_project_detail_input" class="col-md-2 control-label">Detail</label>
+
+				      <div class="col-md-10">
+				        <textarea class="form-control" rows="3" id="update_project_detail_input"></textarea>
+				      </div>
+				    </div>
+				  	
+				</fieldset>
+			</form>
+	      </div>
+
+
+	      <div class="modal-footer">
+	        <input type="button" class="btn btn-default" data-dismiss="modal" value="Close">
+	        <input type="button" class="btn btn-primary" data-dismiss="modal" id="update_project_update_button" value="Update">
+	        <input type="button" class="btn btn-warning" data-dismiss="modal" id="update_project_complete_button" value="Complete">
+	        <input type="button" class="btn btn-danger" data-dismiss="modal" id="update_project_delete_button" value="Delete">
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+
 
     <script>
   		$.material.init();
 
   		// var userData = {"userData":{"_id":"5952006dc8f9fb1865d016a8","__v":0,"userName":"kyoshida","userId":"user1"},"allData":{"userId":"user1","userName":"kyoshida","__v":0,"_id":"5952006dc8f9fb1865d016a8","project":[{"projectId":"abc","projectName":"pro1","projectDetail":"kafadafsdfadfadokao","projectColor":"ff0000","projectOwnerId":"user1","completion":false,"__v":0,"_id":"595200c0c8f9fb1865d016ae","todoList":[{"todoId":"aaa","publisherId":"user1","executorId":"user1","inputTime":"2017-06-27T06:51:13.314Z","limitTime":"2017-06-27T06:51:13.314Z","endTime":"2017-06-27T06:51:13.314Z","title":"todo1","priority":3,"completion":false,"__v":0,"_id":"595200d9c8f9fb1865d016af","tag":[{"_id":"59520089c8f9fb1865d016ab","__v":0,"tag":"a","todoId":"aaa"},{"_id":"5952008dc8f9fb1865d016ac","__v":0,"tag":"b","todoId":"aaa"}],"projectColor":"ff0000","projectName":"pro1","projectId":"abc"},{"todoId":"abc","publisherId":"user1","executorId":"user1","inputTime":"2017-06-29T07:58:55.375Z","limitTime":"2017-06-29T07:58:55.375Z","endTime":"2017-06-29T07:58:55.375Z","title":"fafafa","priority":2,"completion":true,"__v":0,"_id":"5954b34ad1d8032517614d84","tag":[],"projectColor":"ff0000","projectName":"pro1","projectId":"abc"},{"todoId":"ddd","publisherId":"user1","executorId":"user","inputTime":"2017-06-29T07:58:55.375Z","limitTime":"2017-06-29T07:58:55.375Z","endTime":"2017-06-29T07:58:55.375Z","title":"todo2","priority":1,"completion":false,"__v":0,"_id":"5954b367d1d8032517614d85","tag":[],"projectColor":"ff0000","projectName":"pro1","projectId":"abc"}]},{"projectId":"def","projectName":"pro2","projectDetail":"kaokao2","projectColor":"00ff00","projectOwnerId":"user1","completion":false,"__v":0,"_id":"5955298c2a97e1281eba3fa7","todoList":[{"todoId":"def","publisherId":"user1","executorId":"user1","inputTime":"2017-06-29T16:23:04.764Z","limitTime":"2017-06-29T16:23:04.764Z","endTime":"2017-06-29T16:23:04.764Z","title":"todo2pro2","priority":3,"completion":false,"__v":0,"_id":"595529c02a97e1281eba3fa8","tag":[{"_id":"595529cd2a97e1281eba3fa9","__v":0,"tag":"c","todoId":"def"}],"projectColor":"00ff00","projectName":"pro2","projectId":"def"}]}]}}
 
-
+  		var mSearchFlower = null 		// 検索結果のやつ
   		var mToDoFlower = null			// 全体のやつ
   		var mProjectToDoFlowers = []	// プロジェクトごとのやつ
 
@@ -184,6 +322,7 @@
   		var project_flower_div = document.getElementById("project_flower_div")
 
   		var todo_input_button = document.getElementById("input_todo")
+
   		var todo_save_button = document.getElementById("todo_save_button")
   		var todo_priority_input = document.getElementById("todo_priority_input")
   		var todo_date_input = document.getElementById("todo_date_input")
@@ -193,10 +332,30 @@
   		var todo_tag_button = document.getElementById("todo_tag_button")
   		var todo_tag_list = document.getElementById("todo_tag_list")
 
+  		var update_todo_update_button = document.getElementById("update_todo_update_button")
+  		var update_todo_delete_button = document.getElementById("update_todo_delete_button")
+  		var update_todo_complete_button = document.getElementById("update_todo_complete_button")
+  		var update_todo_id_text = document.getElementById("update_todo_id_text")
+  		var update_todo_title_input = document.getElementById("update_todo_title_input")
+  		var update_todo_project_input = document.getElementById("update_todo_project_input")
+  		var update_todo_tag_input = document.getElementById("update_todo_tag_input")
+  		var update_todo_tag_button = document.getElementById("update_todo_tag_button")
+  		var update_todo_tag_list = document.getElementById("update_todo_tag_list")
+
+
   		var project_name_input = document.getElementById("project_name_input")
   		var project_color_input = document.getElementById("project_color_input")
   		var project_detail_input = document.getElementById("project_detail_input")
   		var project_save_button = document.getElementById("project_save_button")
+
+  		var update_project_id_text = document.getElementById("update_project_id_text")
+  		var update_project_name_input = document.getElementById("update_project_name_input")
+  		var update_project_color_input = document.getElementById("update_project_color_input")
+  		var update_project_detail_input = document.getElementById("update_project_detail_input")
+  		var update_project_update_button = document.getElementById("update_project_update_button")
+  		var update_project_delete_button = document.getElementById("update_project_delete_button")
+  		var update_project_complete_button = document.getElementById("update_project_complete_button")
+
 
   		function displayUserToDo(){
   			AjaxModule.getUserDataIncomplete({}, function(userData){
@@ -205,8 +364,9 @@
 	  				projectName : userData.userData.userName+"'s ToDoFlower",
 	  				projectDetail : "You have to do tasks expressed in the petal",
 	  				projectId : "all",
-	  				projectColor : "ffff22"
-	  			}, {boxRatio:0.8})
+	  				projectColor : "ffff55",
+	  				projectOwnerId : "ToDoFlower"
+	  			}, {boxRatio:0.8, userId:userData.userData.userId})
 
 				mProjectToDoFlowers = []
 	  			projectDataList.forEach((pelm, pind, parr)=>{
@@ -214,11 +374,17 @@
 					pelm.todoList.forEach((telm, tind, tarr)=>{
 							mToDoFlower.addToDoElement(telm)
 					})
-					// input todo modal setting
-					var opt = document.createElement("option")
-					opt.dataset.projectId = pelm.projectId
-					opt.innerHTML = pelm.projectName
-					todo_project_input.appendChild(opt)
+					// input/update todo modal setting
+					var opt1 = document.createElement("option")
+					opt1.dataset.projectId = pelm.projectId
+					opt1.innerHTML = pelm.projectName
+					
+					var opt2 = document.createElement("option")
+					opt2.dataset.projectId = pelm.projectId
+					opt2.innerHTML = pelm.projectName
+					
+					todo_project_input.appendChild(opt1)
+					update_todo_project_input.appendChild(opt2)
 
 					// project flower setting
 					if(pind % 2 == 0){
@@ -226,14 +392,16 @@
 							boxTopRatio : 0.5,
 							boxLeftRatio : 0.3,
 							boxRatio:0.6,
-							id : 'project_flower_div'
+							id : 'project_flower_div',
+							userId:userData.userData.userId
 						}))
 					}else{
 						mProjectToDoFlowers.push(new ToDoFlower(pelm,{
 							boxTopRatio : 0.5,
 							boxLeftRatio : 0.7,
 							boxRatio:0.6,
-							id : 'project_flower_div'
+							id : 'project_flower_div',
+							userId:userData.userData.userId
 						}))
 					}
 	  			})
@@ -264,7 +432,7 @@
   				priority : todo_priority_input.value,
   				tag : tagList
   			}
-  			console.log(insertObject);
+  			//console.log(insertObject);
 
   			// remove input data
   			todo_title_input.value = ""
@@ -278,6 +446,8 @@
 	  			flower_div.innerHTML = ""
 	  			project_flower_div.innerHTML = ""
 	  			todo_project_input.innerHTML = ""
+	  			update_todo_project_input.innerHTML = ""
+
 	  			displayUserToDo()	
   			},(err)=>{
   				console.log(err)
@@ -286,7 +456,6 @@
   		})
 
   		todo_tag_button.addEventListener('click',(e)=>{
-  			console.log("faf")
   			var tagName = todo_tag_input.value
   			todo_tag_input.value = ""
 
@@ -342,10 +511,285 @@
   		 		flower_div.innerHTML = ""
 	  			project_flower_div.innerHTML = ""
 	  			todo_project_input.innerHTML = ""
+	  			update_todo_project_input.innerHTML = ""
 	  			displayUserToDo()	
   		 	});
   		 })
 
+
+  		 /*
+  		 	update todo
+  		  */
+  		 
+  		 update_todo_update_button.addEventListener('click', (e)=>{
+  		 	var targetProjectKey = Object.keys(update_todo_project_input.children).filter((elm, ind, arr)=>{
+  				return update_todo_project_input.children[elm].selected
+  			})[0]
+  			var targetProjectId = update_todo_project_input.children[targetProjectKey].dataset.projectId
+
+  			var tagList = Object.keys(update_todo_tag_list.children).map((elm, ind, arr)=>{
+  				return update_todo_tag_list.children[elm].dataset.tagName
+  			})
+  			var insertObject = {
+  				projectId : targetProjectId,
+  				todoId : update_todo_id_text.innerHTML,
+  				title : update_todo_title_input.value,
+  				limitTime : new Date(update_todo_date_input.value),
+  				priority : update_todo_priority_input.value,
+  				tag : tagList
+  			}
+  			//console.log(insertObject);
+
+  			// remove input data
+  			update_todo_title_input.value = ""
+  			update_todo_date_input.value = ""
+  			update_todo_priority_input.value = ""
+  			update_todo_tag_list.innerHTML = ""
+
+  			// ajax send -> add 
+  			AjaxModule.postUpsertToDo(insertObject,(data)=>{
+	  			flower_div.innerHTML = ""
+	  			project_flower_div.innerHTML = ""
+	  			update_todo_project_input.innerHTML = ""
+	  			todo_project_input.innerHTML = ""
+	  			displayUserToDo()	
+  			},(err)=>{
+  				console.log(err)
+  			})
+
+  		 })
+
+  		 update_todo_delete_button.addEventListener('click', (e)=>{
+  		 	var targetProjectKey = Object.keys(update_todo_project_input.children).filter((elm, ind, arr)=>{
+  				return update_todo_project_input.children[elm].selected
+  			})[0]
+  			var targetProjectId = update_todo_project_input.children[targetProjectKey].dataset.projectId
+
+  			var tagList = Object.keys(update_todo_tag_list.children).map((elm, ind, arr)=>{
+  				return update_todo_tag_list.children[elm].dataset.tagName
+  			})
+  			var insertObject = {
+  				projectId : targetProjectId,
+  				todoId : update_todo_id_text.innerHTML,
+  				title : update_todo_title_input.value,
+  				limitTime : new Date(update_todo_date_input.value),
+  				priority : update_todo_priority_input.value,
+  				tag : tagList
+  			}
+  			//console.log(insertObject);
+
+  			// remove input data
+  			update_todo_title_input.value = ""
+  			update_todo_date_input.value = ""
+  			update_todo_priority_input.value = ""
+  			update_todo_tag_list.innerHTML = ""
+
+  			// ajax send -> add 
+  			AjaxModule.postRemoveToDo(insertObject,(data)=>{
+	  			flower_div.innerHTML = ""
+	  			project_flower_div.innerHTML = ""
+	  			update_todo_project_input.innerHTML = ""
+	  			todo_project_input.innerHTML = ""
+	  			displayUserToDo()	
+  			},(err)=>{
+  				console.log(err)
+  			})
+  		 })
+
+  		 update_todo_complete_button.addEventListener('click', (e)=>{
+  		 	var targetProjectKey = Object.keys(update_todo_project_input.children).filter((elm, ind, arr)=>{
+  				return update_todo_project_input.children[elm].selected
+  			})[0]
+  			var targetProjectId = update_todo_project_input.children[targetProjectKey].dataset.projectId
+
+  			var tagList = Object.keys(update_todo_tag_list.children).map((elm, ind, arr)=>{
+  				return update_todo_tag_list.children[elm].dataset.tagName
+  			})
+  			var insertObject = {
+  				projectId : targetProjectId,
+  				todoId : update_todo_id_text.innerHTML,
+  				title : update_todo_title_input.value,
+  				limitTime : new Date(update_todo_date_input.value),
+  				priority : update_todo_priority_input.value,
+  				tag : tagList
+  			}
+  			//console.log(insertObject);
+
+  			// remove input data
+  			update_todo_title_input.value = ""
+  			update_todo_date_input.value = ""
+  			update_todo_priority_input.value = ""
+  			update_todo_tag_list.innerHTML = ""
+
+  			// ajax send -> add 
+  			AjaxModule.postCompleteToDo(insertObject,(data)=>{
+	  			flower_div.innerHTML = ""
+	  			project_flower_div.innerHTML = ""
+	  			update_todo_project_input.innerHTML = ""
+	  			todo_project_input.innerHTML = ""
+	  			displayUserToDo()	
+  			},(err)=>{
+  				console.log(err)
+  			})
+  		 })
+  		 
+
+		update_todo_tag_button.addEventListener('click',(e)=>{
+  			var tagName = update_todo_tag_input.value
+  			update_todo_tag_input.value = ""
+
+  			var row = document.createElement('row')
+  			var label_div = document.createElement('div')
+  			var button_div = document.createElement('div')
+  			var label = document.createElement('legend')
+  			var button = document.createElement('input')
+
+  			row.dataset.tagName = tagName
+  			label_div.className = "col-md-6"
+  			button_div.className = "col-md-6"
+  			label_div.style.textAlign = "center"
+  			button_div.style.textAlign = "center"
+  			label.className = "control-label"
+  			label.innerHTML = tagName
+  			button.className = "btn btn-default"
+  			button.type = "button"
+  			button.value = "delete"
+
+  			label_div.appendChild(label)
+  			button_div.appendChild(button)
+  			row.appendChild(label_div)
+  			row.appendChild(button_div)
+  			update_todo_tag_list.appendChild(row)
+
+  			button.addEventListener('click',(e)=>{
+  				row.parentNode.removeChild(row);
+  			})
+
+  		})
+
+  		 /*
+  		 	update project
+  		  */
+  		 
+  		update_project_update_button.addEventListener('click', (e)=>{
+  			var projectName = update_project_name_input.value
+  		 	var projectColor = update_project_color_input.value
+  		 	var projectDetail = update_project_detail_input.value
+
+  		 	var insertObject = {
+  		 		projectName : projectName,
+  		 		projectColor : projectColor,
+  		 		projectDetail : projectDetail
+  		 	}
+
+  		 	update_project_name_input.value = ""
+  		 	update_project_color_input.value = ""
+  		 	update_project_detail_input.value = ""
+
+  		 	AjaxModule.postUpsertProject(insertObject,function(success){
+  		 		flower_div.innerHTML = ""
+	  			project_flower_div.innerHTML = ""
+	  			todo_project_input.innerHTML = ""
+	  			update_todo_project_input.innerHTML = ""
+	  			displayUserToDo()	
+  		 	})
+  		})
+
+  		update_project_delete_button.addEventListener('click', (e)=>{
+  			var projectName = update_project_name_input.value
+  		 	var projectColor = update_project_color_input.value
+  		 	var projectDetail = update_project_detail_input.value
+
+  		 	var insertObject = {
+  		 		projectName : projectName,
+  		 		projectColor : projectColor,
+  		 		projectDetail : projectDetail
+  		 	}
+
+  		 	update_project_name_input.value = ""
+  		 	update_project_color_input.value = ""
+  		 	update_project_detail_input.value = ""
+
+  		 	AjaxModule.postRemoveProject(insertObject,function(success){
+  		 		flower_div.innerHTML = ""
+	  			project_flower_div.innerHTML = ""
+	  			todo_project_input.innerHTML = ""
+	  			update_todo_project_input.innerHTML = ""
+	  			displayUserToDo()	
+  		 	})
+  		})
+
+  		update_project_complete_button.addEventListener('click', (e)=>{
+  			var projectName = update_project_name_input.value
+  		 	var projectColor = update_project_color_input.value
+  		 	var projectDetail = update_project_detail_input.value
+
+  		 	var insertObject = {
+  		 		projectName : projectName,
+  		 		projectColor : projectColor,
+  		 		projectDetail : projectDetail
+  		 	}
+
+  		 	update_project_name_input.value = ""
+  		 	update_project_color_input.value = ""
+  		 	update_project_detail_input.value = ""
+
+  		 	AjaxModule.postCompleteProject(insertObject,function(success){
+  		 		flower_div.innerHTML = ""
+	  			project_flower_div.innerHTML = ""
+	  			todo_project_input.innerHTML = ""
+	  			update_todo_project_input.innerHTML = ""
+	  			displayUserToDo()	
+  		 	});
+  		})
+ 			// <div class="navbar-form navbar-left">
+		  //         <input type="text" class="form-control" placeholder="Active Tag Search">
+		  //     </div>
+  		var search_bar_div = document.getElementById("search_bar_div")
+  		
+  		var search_bar_input = document.createElement("input")
+  		var search_bar_box = document.createElement("div")
+
+  		search_bar_box.className = "navbar-form navbar-left"
+  		search_bar_input.type = "text"
+  		search_bar_input.className = "form-control"
+  		search_bar_input.placeholder = "Active Tag Search"
+
+  		search_bar_box.appendChild(search_bar_input)
+  		search_bar_div.appendChild(search_bar_box)
+
+  		search_bar_input.addEventListener('keydown', (e)=>{
+  			if(e.key == "Enter"){
+  				var flower_component_div = document.getElementById("flower_component_div")
+  				flower_component_div.innerHTML = ""
+  				var tagName = search_bar_input.value
+  				AjaxModule.getToDoListWithTag({tag:tagName},function(datas){
+  					var search_flower_h2 = document.createElement("h2")
+  					var search_flower_box = document.createElement("div")
+  					
+  					search_flower_box.className = "flower_div"
+  					search_flower_box.id = "search_flower_box"
+  					search_flower_h2.innerHTML = "Result of Tag Search"
+  					search_flower_h2.style.marginLeft = "5%"
+
+  					flower_component_div.insertBefore(search_flower_box, flower_component_div.firstChild)
+  					flower_component_div.insertBefore(search_flower_h2, flower_component_div.firstChild)
+
+  					mSearchFlower = new ToDoFlower({
+	  				projectName : "Result of Tag Search",
+	  				projectDetail : "You have to do tasks having the tag expressed in the petal",
+	  				projectId : "TagSearch",
+	  				projectColor : "55ff55",
+	  				projectOwnerId : "ToDoFlower"
+	  			}, {boxRatio:0.8, userId:datas.userData.userId,id : 'search_flower_box'})
+  					datas.todoList.forEach((telm, tind, tarr)=>{
+							mSearchFlower.addToDoElement(telm)
+					})
+
+
+  				})
+  			}
+  		})
   		displayUserToDo()
 	</script>
 <% end %>

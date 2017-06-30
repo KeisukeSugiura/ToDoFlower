@@ -1,6 +1,11 @@
 <% extend 'layout' %>
 
-    <h1><%= @title %></h1>
-    <h2><%= @username %></h2>
+    <h2 style="margin-left:5%;"><%= @userName %>'s MENU</h2>
+	<div style="padding:0% 5% 5% 5%">
+   		<h3>Your ID : <%= @id %></h3>
+   		<h3>Your Name : <%= @userName %></h3>
+   		<h3>Your Application Programming Interface Key : <%= @apikey %></h3>
+	</div>
+
 
 <% end %>
