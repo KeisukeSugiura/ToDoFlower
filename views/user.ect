@@ -1,45 +1,351 @@
 <% extend 'layout' %>
 
-    <h1><%= @title %></h1>
-    <h2><%= @userName %>'s Home</h2>
-	
-	<div id="flower_div">
+	<h2 style="margin-left:5%">ToDo Flower Including All</h2>
+	<div id="flower_div" class="flower_div">
+
+	<!-- 	
+		<div class="project_box_div">
+			<div class="project_circle_div">
+				<p>project1</p>
+			</div>
+			<div class="todo_petal_div">
+				<p>todo1</p>
+			</div>
+
+			<div class="todo_petal_div">
+				<p>todo2</p>
+			</div>
+			
+		</div> -->
+
+	</div>
+	<h2 style="margin-left:5%">ToDo Flower for Each Project</h2>
+
+	<div id="project_flower_div" class="flower_div">
 		
 	</div>
-	
 
-	<style type="text/css">
-		html {
-			padding:0px 0px 0px 0px;
-			margin:0px 0px 0px 0px;
-			width:100%;
-			height:100%;
-		}
-		body {
-			padding:0px 0px 0px 0px;
-			margin:0px 0px 0px 0px;
-			width:100%;
-			height:100%;
-		}
-	</style>
+	<div class="edit_button_group">
+		<a id="input_todo_button" class="btn btn-warning btn-fab" data-toggle="modal" data-target="#inputToDoModal"><i class="material-icons">add</i></a>
+	</div> 
+
+	<div class="p_edit_button_group">
+		<a id="input_project_button" class="btn btn-info btn-fab" data-toggle="modal" data-target="#inputProjectModal"><i class="material-icons">add</i></a>
+	</div> 
+
+	<!-- ToDoList作成フォーム -->
+	<div class="modal" id="inputToDoModal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	        <h4 class="modal-title">Input new TODO!!</h4>
+	      </div>
+	      <div class="modal-body">
+			<form class="form-horizontal">
+				<fieldset>
+				  <div class="form-group">
+						<row>
+						  <label for="todo_title_input" class="col-md-2 control-label">Title</label>
+					      <div class="col-md-10">
+					        <input type="text" class="form-control" id="todo_title_input" placeholder="ToDo Title">
+					      </div>
+						</row>
+					</div>
+					<div class="form-group">
+				     	<row>
+				     		<label for="todo_project_input" class="col-md-2 control-label">Project</label>
+				     		<div class="col-md-10">
+				     			<select id="todo_project_input" class="form-control">
+				
+						        </select>
+				     		</div>
+				     	</row>
+				    </div>
+					<div class="form-group">
+						<row>
+							<label for="todo_date_input" class="col-md-2 control-label">Time Limit</label>
+							<div class="col-md-10">
+								<input type="date" class="form-control" id="todo_date_input" placeholder="Time Limit">
+							</div>
+						</row>
+					</div>
+					<div class="form-group">
+				     	<row>
+				     		<label for="todo_priority_input" class="col-md-2 control-label">Priority</label>
+				     		<div class="col-md-10">
+				     			<select id="todo_priority_input" class="form-control">
+						          <option>1</option>
+						          <option>2</option>
+						          <option>3</option>
+						          <option>4</option>
+						          <option>5</option>
+						        </select>
+				     		</div>
+				     	</row>
+				    </div>
+				    <div class="form-group">
+						<row>
+						  <label for="todo_tag_input" class="col-md-2 control-label">Tag</label>
+					      <div class="col-md-8">
+					        <input type="text" class="form-control" id="todo_tag_input" placeholder="ToDo Tag">
+					      </div>
+					      <div class="col-md-2">
+							<input type="button" class="btn btn-default" id="todo_tag_button" value="add">
+					      </div>
+						</row>
+						<row>
+							<div id="todo_tag_list" class="col-md-12">
+								<!-- <row>
+							 		 <label class="col-md-10"></label>
+							 		 <button class="col-md-2"></div>
+								</row> -->
+							</div>
+						<row>
+					</div>
+				</fieldset>
+			</form>
+	      </div>
+
+
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" id="todo_save_button">Save</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+	<!-- Project作成フォーム -->
+	
+	<div class="modal" id="inputProjectModal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	        <h4 class="modal-title">Input NEW Project!!</h4>
+	      </div>
+	      <div class="modal-body">
+			<form class="form-horizontal">
+				<fieldset>
+					<div class="form-group">
+						<row>
+						  <label for="project_name_input" class="col-md-2 control-label">Project Name</label>
+					      <div class="col-md-10">
+					        <input type="text" class="form-control" id="project_name_input" placeholder="Project Name">
+					      </div>
+						</row>
+				 	</div>
+					<div class="form-group">
+						<row>
+						  <label for="project_color_input" class="col-md-2 control-label">Project Color</label>
+					      <div class="col-md-10">
+					        <input type="text" class="form-control" id="project_color_input" placeholder="Project Color like ffffff" maxlength='6'>
+					      </div>
+						</row>
+				  	</div>
+				  	<div class="form-group">
+				      <label for="project_detail_input" class="col-md-2 control-label">Detail</label>
+
+				      <div class="col-md-10">
+				        <textarea class="form-control" rows="3" id="project_detail_input"></textarea>
+				      </div>
+				    </div>
+				  	
+				</fieldset>
+			</form>
+	      </div>
+
+
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" id="project_save_button">Save</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+	<!-- todo 更新フォーム	 -->
+
+	<!-- project更新フォーム -->
 
     <script>
   		$.material.init();
 
-  		var screenWidth = window.innerWidth;
-  		var screenHeight = window.innerHeight;
+  		// var userData = {"userData":{"_id":"5952006dc8f9fb1865d016a8","__v":0,"userName":"kyoshida","userId":"user1"},"allData":{"userId":"user1","userName":"kyoshida","__v":0,"_id":"5952006dc8f9fb1865d016a8","project":[{"projectId":"abc","projectName":"pro1","projectDetail":"kafadafsdfadfadokao","projectColor":"ff0000","projectOwnerId":"user1","completion":false,"__v":0,"_id":"595200c0c8f9fb1865d016ae","todoList":[{"todoId":"aaa","publisherId":"user1","executorId":"user1","inputTime":"2017-06-27T06:51:13.314Z","limitTime":"2017-06-27T06:51:13.314Z","endTime":"2017-06-27T06:51:13.314Z","title":"todo1","priority":3,"completion":false,"__v":0,"_id":"595200d9c8f9fb1865d016af","tag":[{"_id":"59520089c8f9fb1865d016ab","__v":0,"tag":"a","todoId":"aaa"},{"_id":"5952008dc8f9fb1865d016ac","__v":0,"tag":"b","todoId":"aaa"}],"projectColor":"ff0000","projectName":"pro1","projectId":"abc"},{"todoId":"abc","publisherId":"user1","executorId":"user1","inputTime":"2017-06-29T07:58:55.375Z","limitTime":"2017-06-29T07:58:55.375Z","endTime":"2017-06-29T07:58:55.375Z","title":"fafafa","priority":2,"completion":true,"__v":0,"_id":"5954b34ad1d8032517614d84","tag":[],"projectColor":"ff0000","projectName":"pro1","projectId":"abc"},{"todoId":"ddd","publisherId":"user1","executorId":"user","inputTime":"2017-06-29T07:58:55.375Z","limitTime":"2017-06-29T07:58:55.375Z","endTime":"2017-06-29T07:58:55.375Z","title":"todo2","priority":1,"completion":false,"__v":0,"_id":"5954b367d1d8032517614d85","tag":[],"projectColor":"ff0000","projectName":"pro1","projectId":"abc"}]},{"projectId":"def","projectName":"pro2","projectDetail":"kaokao2","projectColor":"00ff00","projectOwnerId":"user1","completion":false,"__v":0,"_id":"5955298c2a97e1281eba3fa7","todoList":[{"todoId":"def","publisherId":"user1","executorId":"user1","inputTime":"2017-06-29T16:23:04.764Z","limitTime":"2017-06-29T16:23:04.764Z","endTime":"2017-06-29T16:23:04.764Z","title":"todo2pro2","priority":3,"completion":false,"__v":0,"_id":"595529c02a97e1281eba3fa8","tag":[{"_id":"595529cd2a97e1281eba3fa9","__v":0,"tag":"c","todoId":"def"}],"projectColor":"00ff00","projectName":"pro2","projectId":"def"}]}]}}
 
 
-  		var flower_div = document.getElementById('flower_div');
+  		var mToDoFlower = null			// 全体のやつ
+  		var mProjectToDoFlowers = []	// プロジェクトごとのやつ
 
+  		var flower_div = document.getElementById("flower_div")
+  		var project_flower_div = document.getElementById("project_flower_div")
 
-  		window.onresize = function(e){
-  			screenWidth = window.innerWidth;
-  			screenHeight = window.innerHeight;
+  		var todo_input_button = document.getElementById("input_todo")
+  		var todo_save_button = document.getElementById("todo_save_button")
+  		var todo_priority_input = document.getElementById("todo_priority_input")
+  		var todo_date_input = document.getElementById("todo_date_input")
+  		var todo_title_input = document.getElementById("todo_title_input")
+  		var todo_project_input = document.getElementById("todo_project_input")
+  		var todo_tag_input = document.getElementById("todo_tag_input")
+  		var todo_tag_button = document.getElementById("todo_tag_button")
+  		var todo_tag_list = document.getElementById("todo_tag_list")
+
+  		var project_name_input = document.getElementById("project_name_input")
+  		var project_color_input = document.getElementById("project_color_input")
+  		var project_detail_input = document.getElementById("project_detail_input")
+  		var project_save_button = document.getElementById("project_save_button")
+
+  		function displayUserToDo(){
+  			AjaxModule.getUserDataIncomplete({}, function(userData){
+	  			var projectDataList = userData.allData.project
+	  			mToDoFlower = new ToDoFlower({
+	  				projectName : userData.userData.userName+"'s ToDoFlower",
+	  				projectDetail : "You have to do tasks expressed in the petal",
+	  				projectId : "all",
+	  				projectColor : "ffff22"
+	  			}, {boxRatio:0.8})
+
+				mProjectToDoFlowers = []
+	  			projectDataList.forEach((pelm, pind, parr)=>{
+					
+					pelm.todoList.forEach((telm, tind, tarr)=>{
+							mToDoFlower.addToDoElement(telm)
+					})
+					// input todo modal setting
+					var opt = document.createElement("option")
+					opt.dataset.projectId = pelm.projectId
+					opt.innerHTML = pelm.projectName
+					todo_project_input.appendChild(opt)
+
+					// project flower setting
+					if(pind % 2 == 0){
+						mProjectToDoFlowers.push(new ToDoFlower(pelm,{
+							boxTopRatio : 0.5,
+							boxLeftRatio : 0.3,
+							boxRatio:0.6,
+							id : 'project_flower_div'
+						}))
+					}else{
+						mProjectToDoFlowers.push(new ToDoFlower(pelm,{
+							boxTopRatio : 0.5,
+							boxLeftRatio : 0.7,
+							boxRatio:0.6,
+							id : 'project_flower_div'
+						}))
+					}
+	  			})
+
+	  		},function(err){
+	  			console.log("error on getting user data.");
+	  		});
   		}
+  		
 
+  		/*
+  			insert todo
+  		 */
 
+  		todo_save_button.addEventListener('click',(e)=>{
+  			var targetProjectKey = Object.keys(todo_project_input.children).filter((elm, ind, arr)=>{
+  				return todo_project_input.children[elm].selected
+  			})[0]
+  			var targetProjectId = todo_project_input.children[targetProjectKey].dataset.projectId
 
+  			var tagList = Object.keys(todo_tag_list.children).map((elm, ind, arr)=>{
+  				return todo_tag_list.children[elm].dataset.tagName
+  			})
+  			var insertObject = {
+  				projectId : targetProjectId,
+  				title : todo_title_input.value,
+  				limitTime : new Date(todo_date_input.value),
+  				priority : todo_priority_input.value,
+  				tag : tagList
+  			}
+  			console.log(insertObject);
 
+  			// remove input data
+  			todo_title_input.value = ""
+  			todo_date_input.value = ""
+  			todo_priority_input.value = ""
+  			todo_tag_list.innerHTML = ""
+
+  			// ajax send -> add 
+  			// 
+  			AjaxModule.postInsertToDo(insertObject,(data)=>{
+	  			flower_div.innerHTML = ""
+	  			project_flower_div.innerHTML = ""
+	  			todo_project_input.innerHTML = ""
+	  			displayUserToDo()	
+  			},(err)=>{
+  				console.log(err)
+  			})
+
+  		})
+
+  		todo_tag_button.addEventListener('click',(e)=>{
+  			console.log("faf")
+  			var tagName = todo_tag_input.value
+  			todo_tag_input.value = ""
+
+  			var row = document.createElement('row')
+  			var label_div = document.createElement('div')
+  			var button_div = document.createElement('div')
+  			var label = document.createElement('legend')
+  			var button = document.createElement('input')
+
+  			row.dataset.tagName = tagName
+  			label_div.className = "col-md-6"
+  			button_div.className = "col-md-6"
+  			label_div.style.textAlign = "center"
+  			button_div.style.textAlign = "center"
+  			label.className = "control-label"
+  			label.innerHTML = tagName
+  			button.className = "btn btn-default"
+  			button.type = "button"
+  			button.value = "delete"
+
+  			label_div.appendChild(label)
+  			button_div.appendChild(button)
+  			row.appendChild(label_div)
+  			row.appendChild(button_div)
+  			todo_tag_list.appendChild(row)
+
+  			button.addEventListener('click',(e)=>{
+  				row.parentNode.removeChild(row);
+  			})
+
+  		})
+
+  		/*
+  			insert project
+  		 */
+
+  		 project_save_button.addEventListener('click',(e)=>{
+  		 	var projectName = project_name_input.value
+  		 	var projectColor = project_color_input.value
+  		 	var projectDetail = project_detail_input.value
+
+  		 	var insertObject = {
+  		 		projectName : projectName,
+  		 		projectColor : projectColor,
+  		 		projectDetail : projectDetail
+  		 	}
+
+  		 	project_name_input.value = ""
+  		 	project_color_input.value = ""
+  		 	project_detail_input.value = ""
+
+  		 	AjaxModule.postInsertProject(insertObject,function(success){
+  		 		flower_div.innerHTML = ""
+	  			project_flower_div.innerHTML = ""
+	  			todo_project_input.innerHTML = ""
+	  			displayUserToDo()	
+  		 	});
+  		 })
+
+  		displayUserToDo()
 	</script>
 <% end %>

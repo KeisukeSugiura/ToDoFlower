@@ -53,13 +53,35 @@ var AjaxModule = (function(){
 		    	};
 	}
 
+	var modules = {};
+
+	/*
+		api for client
+	 */
+
+	 modules.getUserData = ajaxGetModel('/api/userData', 'json');
+	 modules.getUserDataIncomplete = ajaxGetModel('/api/userData/incomplete', 'json');
+
+	 modules.getIncompleteToDoList = ajaxGetModel('/api/todo/incomplete', 'json');
+	 modules.getCompleteToDoList = ajaxGetModel('/api/todo/complete', 'json');
+	 modules.getAllToDoList = ajaxGetModel('/api/todo/all', 'json');
+	 modules.getDetailToDoList = ajaxGetModel('/api/todo/detail', 'json');
+
+	 modules.getIncompleteProject = ajaxGetModel('/api/project/incomplete', 'json');
+	 modules.getCompleteProject = ajaxGetModel('/api/project/complete', 'json');
+	 modules.getAllProject = ajaxGetModel('/api/project/all', 'json');
+	 modules.getDetailToDoList = ajaxGetModel('/api/project/detail', 'json');
+
+	 modules.postInsertToDo = ajaxPostModel('/api/todo/insert', 'json');
+	 modules.postUpsertToDo = ajaxPostModel('/api/todo/upsert', 'json');
+	 modules.postInsertProject = ajaxPostModel('/api/project/insert', 'json');
+	 modules.postUpsertProject = ajaxPostModel('/api/project/upsert', 'json');
 
 	/*
 		crud api for super user
 		url example : /api/User/find, /api/Password/upsert...
 		how to use : AjaxModule["dbName"].find(data, successFn, errorFn, doneFn)
 	 */
-	var modules = {};
 	var getKeys = ajaxGetModel('/api/keys', 'json')({}, function(data){
 		data.keys.forEach(function(dbName, dbInd, dbArr){
 			modules[dbName] = {};

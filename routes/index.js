@@ -52,6 +52,7 @@ router.post('/login', loginCheckModule.loginCheckHome, function(req, res, next){
 					name : userData.userName,
 					apikey : passwordDatas[0].apikey
 				};
+				console.log(req.session.user)
 				req.session.user = session;
 				res.redirect('/users');
 			});

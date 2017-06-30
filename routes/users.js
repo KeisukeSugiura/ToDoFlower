@@ -8,6 +8,7 @@ var CTRModule = require('../modules/CTRModule');
 
 /**
  *  GET Request for /user/*  
+ *  require title and userName
  */
 
 router.get('/', loginCheckModule.loginCheck, function(req, res, next) {
