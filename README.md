@@ -86,6 +86,7 @@ ToDoを花のように管理できるWebアプリケーション
 - bootstrap
 - bootstrap-material-design
 - jQuery
+- anime
 
 ## システムURL構成  
 ### ログインページ
