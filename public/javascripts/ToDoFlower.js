@@ -135,6 +135,10 @@ class ToDoFlower{
 				todoTitle.innerHTML = "<strong>"+elm.title+"</storng>"
 				todoPriority.innerHTML = "priority : " + String(elm.priority)
 
+				if(String(elm.priority).length == 0){
+					todoPriority.innerHTML = ""
+				}
+
 				titleDiv.appendChild(todoTitle)
 				titleDiv.appendChild(todoPriority)
 				titleDiv.appendChild(todoTag)
@@ -224,6 +228,10 @@ class ToDoFlower{
 
 		todoTitle.innerHTML = "<strong>"+todo.title+"</storng>"
 		todoPriority.innerHTML = "priority : " + String(todo.priority)
+
+		if(!todo.priority){
+			todoPriority.innerHTML = ""
+		}
 
 		var tagString = ""
 		todo.tag.forEach((elm, ind, arr)=>{

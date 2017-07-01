@@ -1,10 +1,84 @@
 <% extend 'layout_home' %>
-	<div class="container">
+	<div class="container" style="background-color: rgba(255, 255, 255, 0.8);">
 	    <h1 style="margin-left:5%;"><%- @title %>へようこそ</h1>
 	    <h3 style="margin-left:10%;">ToDoFlowerはToDoを花のように管理できるWebアプリケーションです</h3>
 	    <h3 style="margin-left:10%;">上のメニューバーからログイン、もしくはユーザ登録をしてください</h3>
 	</div>
+	<div id="flower_div" class="flower_div" style="z-index: -1;margin-top:-10%;">
+	</div>
+
+	<style>
+		body {
+			background-color: transparent;
+		}
+	</style>	
    <script>
 		$.material.init();
+
+		var userData = {"userData":{"_id":"5956dfde46eb5e3429110ad8","__v":0,"userName":"けいすけ","userId":"kyoshida"},"allData":{"userId":"kyoshida","userName":"けいすけ","__v":0,"_id":"5956dfde46eb5e3429110ad8","project":[{"projectId":"pdpqcwhfr","projectName":"default","projectDetail":"This project is default project.","projectColor":"ffffff","projectOwnerId":"ToDoFlower","completion":false,"__v":0,"_id":"5956dfde46eb5e3429110ad9","todoList":[{"todoId":"t451p2e29","publisherId":"kyoshida","executorId":"kyoshida","inputTime":"2017-06-30T23:34:54.623Z","limitTime":"2017-07-01T00:00:00.000Z","endTime":"2017-06-30T23:34:54.623Z","title":"システム開発","priority":3,"completion":false,"__v":0,"_id":"5956e01e46eb5e3429110adb","tag":[{"_id":"5956e01e46eb5e3429110ade","__v":0,"tag":"js","todoId":"t451p2e29"}],"projectColor":"ffffff","projectName":"default","projectId":"pdpqcwhfr"}]},{"projectId":"pbmfe0zfr","projectName":"ToDoFlower","projectDetail":"ToDO管理アプリケーションを作成する","projectColor":"ffccee","projectOwnerId":"kyoshida","completion":false,"__v":0,"_id":"5956e05346eb5e3429110adf","todoList":[{"todoId":"trgevzpvi","publisherId":"kyoshida","executorId":"kyoshida","inputTime":"2017-06-30T23:36:17.607Z","limitTime":"2017-07-02T00:00:00.000Z","endTime":"2017-06-30T23:36:17.607Z","title":"データベース","priority":5,"completion":false,"__v":0,"_id":"5956e07146eb5e3429110ae1","tag":[{"_id":"5956e07146eb5e3429110ae4","__v":0,"tag":"js","todoId":"trgevzpvi"},{"_id":"5956e07146eb5e3429110ae5","__v":0,"tag":"mongodb","todoId":"trgevzpvi"}],"projectColor":"ffccee","projectName":"ToDoFlower","projectId":"pbmfe0zfr"},{"todoId":"tlz19vn29","publisherId":"kyoshida","executorId":"kyoshida","inputTime":"2017-06-30T23:36:46.471Z","limitTime":"2017-07-02T00:00:00.000Z","endTime":"2017-06-30T23:36:46.471Z","title":"api提供","priority":2,"completion":false,"__v":0,"_id":"5956e08e46eb5e3429110ae6","tag":[{"_id":"5956e08e46eb5e3429110ae9","__v":0,"tag":"express","todoId":"tlz19vn29"},{"_id":"5956e08e46eb5e3429110aea","__v":0,"tag":"js","todoId":"tlz19vn29"}],"projectColor":"ffccee","projectName":"ToDoFlower","projectId":"pbmfe0zfr"}]},{"projectId":"pzhcnxw29","projectName":"ゼミ活動","projectDetail":"卒業に向けて研究活動を行う","projectColor":"ffcc77","projectOwnerId":"kyoshida","completion":false,"__v":0,"_id":"5956e0bd46eb5e3429110aeb","todoList":[{"todoId":"tka84zpvi","publisherId":"kyoshida","executorId":"kyoshida","inputTime":"2017-07-01T08:20:35.544Z","limitTime":"2017-07-12T00:00:00.000Z","endTime":"2017-07-01T08:20:35.544Z","title":"論文サーベイ","priority":2,"completion":false,"__v":0,"_id":"5956e0fa46eb5e3429110aee","tag":[{"_id":"59575b53e058f03848d3991c","__v":0,"tag":"研究","todoId":"tka84zpvi"},{"_id":"59575b53e058f03848d3991d","__v":0,"tag":"mongodb","todoId":"tka84zpvi"}],"projectColor":"ffcc77","projectName":"ゼミ活動","projectId":"pzhcnxw29"},{"todoId":"too91kyb9","publisherId":"kyoshida","executorId":"kyoshida","inputTime":"2017-06-30T23:39:03.336Z","limitTime":"2017-07-05T00:00:00.000Z","endTime":"2017-06-30T23:39:03.336Z","title":"システム実装","priority":2,"completion":false,"__v":0,"_id":"5956e11746eb5e3429110af2","tag":[{"_id":"5956e11746eb5e3429110af5","__v":0,"tag":"js","todoId":"too91kyb9"}],"projectColor":"ffcc77","projectName":"ゼミ活動","projectId":"pzhcnxw29"}]}]}}
+
+	  	var projectDataList = userData.allData.project
+		var mToDoFlower = new ToDoFlower({
+			projectName : "ToDoFlower",
+			projectDetail : "You can manage tasks as like Flower.\n You should use ToDoFlower right now.",
+			projectId : "all",
+			projectColor : "ff9955",
+			projectOwnerId : "ToDoFlower"
+		}, {boxRatio:0.9, boxTopRatio:0.5, userId:userData.userData.userId})
+
+
+		var todoList = [
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			},
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			},
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			},
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			},
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			},
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			},
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			},
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			},
+			{
+				"title":"",
+				"tag":[],
+				"projectColor":"ff9955",
+			}	
+		]
+
+		todoList.forEach((telm, tind, tarr)=>{
+				mToDoFlower.addToDoElement(telm)
+		})
+
+
     </script>
 <% end %>
