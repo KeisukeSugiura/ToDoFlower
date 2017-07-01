@@ -242,7 +242,7 @@ var ACDModule = (function(){
 			dbModule.insert("User", {userId:userData.userId, userName:userData.userName}, function(){
 				dbModule.insert("Project", {projectId:uniqueProjectId, projectName: "default", projectDetail:"This project is default project.", projectColor:"ffffff", projectOwnerId:"ToDoFlower", completion:false}, function(){
 					dbModule.insert("UserProject", {userId:userData.userId, projectId:uniqueProjectId}, function(){
-						callback();
+						callback(uniqueApikey);
 					});
 				});
 			});

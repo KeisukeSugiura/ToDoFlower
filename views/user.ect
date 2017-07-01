@@ -359,6 +359,7 @@
 
   		function displayUserToDo(){
   			AjaxModule.getUserDataIncomplete({}, function(userData){
+  				console.log(userData)
 	  			var projectDataList = userData.allData.project
 	  			mToDoFlower = new ToDoFlower({
 	  				projectName : userData.userData.userName+"'s ToDoFlower",
@@ -759,7 +760,7 @@
   		search_bar_div.appendChild(search_bar_box)
 
   		search_bar_input.addEventListener('keydown', (e)=>{
-  			if(e.key == "Enter"){
+  			if(e.key == "Enter" && search_bar_input.value != ""){
   				var flower_component_div = document.getElementById("flower_component_div")
   				flower_component_div.innerHTML = ""
   				var tagName = search_bar_input.value
@@ -788,6 +789,10 @@
 
 
   				})
+  			}else if(e.key == "Enter" && search_bar_input.value == ""){
+  				var flower_component_div = document.getElementById("flower_component_div")
+  				flower_component_div.innerHTML = ""
+
   			}
   		})
   		displayUserToDo()

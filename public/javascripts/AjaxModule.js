@@ -72,15 +72,15 @@ var AjaxModule = (function(){
 	 modules.getAllProject = ajaxGetModel('/api/project/all', 'json');
 	 modules.getDetailToDoList = ajaxGetModel('/api/project/detail', 'json');
 
-	 modules.postInsertToDo = ajaxPostModel('/api/todo/insert', 'json');
-	 modules.postUpsertToDo = ajaxPostModel('/api/todo/upsert', 'json');
-	 modules.postInsertProject = ajaxPostModel('/api/project/insert', 'json');
-	 modules.postUpsertProject = ajaxPostModel('/api/project/upsert', 'json');
+	 modules.postInsertToDo = ajaxPostModel('/api/todoObj/insert', 'json');
+	 modules.postUpsertToDo = ajaxPostModel('/api/todoObj/upsert', 'json');
+	 modules.postInsertProject = ajaxPostModel('/api/projectObj/insert', 'json');
+	 modules.postUpsertProject = ajaxPostModel('/api/projectObj/upsert', 'json');
 
-	 modules.postRemoveToDo = ajaxPostModel('/api/todo/remove', 'json');
-	 modules.postCompleteToDo = ajaxPostModel('/api/todo/complete', 'json');
-	 modules.postRemoveProject = ajaxPostModel('/api/project/remove', 'json');
-	 modules.postCOmpleteproject = ajaxPostModel('/api/project/complete', 'json');
+	 modules.postRemoveToDo = ajaxPostModel('/api/todoObj/remove', 'json');
+	 modules.postCompleteToDo = ajaxPostModel('/api/todoObj/complete', 'json');
+	 modules.postRemoveProject = ajaxPostModel('/api/projectObj/remove', 'json');
+	 modules.postCOmpleteproject = ajaxPostModel('/api/projectObj/complete', 'json');
 
 	 modules.getToDoListWithTag = ajaxGetModel('/api/todo/search/tag', 'json');
 

@@ -78,10 +78,11 @@ router.post('/signup', loginCheckModule.loginCheckHome, function(req, res, next)
 			res.render('signup',{title:'Signup', err:'Sorry, "'+userId+'" is already used.'})
 		}else{
 			// 登録
-			ACDModule.insertInitialUserData({userId:userId, userName:userName, password:password}, function(){
+			ACDModule.insertInitialUserData({userId:userId, userName:userName, password:password}, function(apikey){
 				var session = {
 					id : userId,
-					name : userName
+					name : userName,
+					apikey : apikey
 				};
 				req.session.user = session;
 				res.redirect('/users');

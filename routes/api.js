@@ -245,7 +245,7 @@ router.get('/todo/search/tag', loginCheckModule.apikeyCheck, function(req, res, 
  * POST methods
  */
 
-router.post('/todo/insert', loginCheckModule.apikeyCheck, function(req, res, next){
+router.post('/todoObj/insert', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
 		var insertData = Object.assign({}, req.body);
@@ -258,7 +258,7 @@ router.post('/todo/insert', loginCheckModule.apikeyCheck, function(req, res, nex
 	});
 });
 
-router.post('/todo/upsert', loginCheckModule.apikeyCheck, function(req, res, next){
+router.post('/todoObj/upsert', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
 		var insertData = Object.assign({}, req.body);
@@ -271,7 +271,7 @@ router.post('/todo/upsert', loginCheckModule.apikeyCheck, function(req, res, nex
 	});
 });
 
-router.post('/project/insert', loginCheckModule.apikeyCheck, function(req, res, next){
+router.post('/projectObj/insert', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
 		var insertData = Object.assign({}, req.body);
@@ -283,7 +283,7 @@ router.post('/project/insert', loginCheckModule.apikeyCheck, function(req, res, 
 	});
 });
 
-router.post('/project/upsert', loginCheckModule.apikeyCheck, function(req, res, next){
+router.post('/projectObj/upsert', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
 		var insertData = Object.assign({}, req.body);
@@ -295,7 +295,7 @@ router.post('/project/upsert', loginCheckModule.apikeyCheck, function(req, res, 
 	});
 });
 
-router.post('/todo/remove', loginCheckModule.apikeyCheck, function(req, res, next){
+router.post('/todoObj/remove', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
 		var insertData = Object.assign({}, req.body);
@@ -308,7 +308,7 @@ router.post('/todo/remove', loginCheckModule.apikeyCheck, function(req, res, nex
 	});
 });
 
-router.post('/todo/complete', loginCheckModule.apikeyCheck, function(req, res, next){
+router.post('/todoObj/complete', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
 		var insertData = Object.assign({}, req.body);
@@ -322,7 +322,7 @@ router.post('/todo/complete', loginCheckModule.apikeyCheck, function(req, res, n
 });
 
 
-router.post('/project/remove', loginCheckModule.apikeyCheck, function(req, res, next){
+router.post('/projectObj/remove', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
 		var insertData = Object.assign({}, req.body);
@@ -334,7 +334,7 @@ router.post('/project/remove', loginCheckModule.apikeyCheck, function(req, res, 
 	});
 });
 
-router.post('/project/complete', loginCheckModule.apikeyCheck, function(req, res, next){
+router.post('/projectObj/complete', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){
 		var insertData = Object.assign({}, req.body);
@@ -380,6 +380,7 @@ Object.keys(dbModule.databases).forEach(function(dbName, dbInd, dbArr){
 
 	['insert', 'upsert', 'remove'].forEach(function(cudName, cudInd, cudArr){
 		router.post('/'+dbName+'/'+cudName, function(req, res, next){
+			console.log(CTRModule[cudName])
 			CTRModule[cudName](req, res, dbName);
 		});
 	});
