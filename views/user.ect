@@ -1,24 +1,12 @@
 <% extend 'layout' %>
+	<h2 id = "search_flower_h2" style="margin-left:5%;"></h2>
+
 	<div id = "flower_component_div">
 	</div>
 
 	<h2 style="margin-left:5%">ToDo Flower Including All</h2>
 	<div id="flower_div" class="flower_div">
 
-	<!-- 	
-		<div class="project_box_div">
-			<div class="project_circle_div">
-				<p>project1</p>
-			</div>
-			<div class="todo_petal_div">
-				<p>todo1</p>
-			</div>
-
-			<div class="todo_petal_div">
-				<p>todo2</p>
-			</div>
-			
-		</div> -->
 
 	</div>
 	<h2 style="margin-left:5%">ToDo Flower for Each Project</h2>
@@ -97,10 +85,7 @@
 						</row>
 						<row>
 							<div id="todo_tag_list" class="col-md-12">
-								<!-- <row>
-							 		 <label class="col-md-10"></label>
-							 		 <button class="col-md-2"></div>
-								</row> -->
+					
 							</div>
 						<row>
 					</div>
@@ -232,10 +217,6 @@
 						</row>
 						<row>
 							<div id="update_todo_tag_list" class="col-md-12">
-								<!-- <row>
-							 		 <label class="col-md-10"></label>
-							 		 <button class="col-md-2"></div>
-								</row> -->
 							</div>
 						<row>
 					</div>
@@ -394,7 +375,8 @@
 							boxLeftRatio : 0.3,
 							boxRatio:0.6,
 							id : 'project_flower_div',
-							userId:userData.userData.userId
+							userId:userData.userData.userId,
+							rotateDirection : -1
 						}))
 					}else{
 						mProjectToDoFlowers.push(new ToDoFlower(pelm,{
@@ -402,7 +384,8 @@
 							boxLeftRatio : 0.7,
 							boxRatio:0.6,
 							id : 'project_flower_div',
-							userId:userData.userData.userId
+							userId:userData.userData.userId,
+							rotateDirection : 1
 						}))
 					}
 	  			})
@@ -433,7 +416,6 @@
   				priority : todo_priority_input.value,
   				tag : tagList
   			}
-  			//console.log(insertObject);
 
   			// remove input data
   			todo_title_input.value = ""
@@ -441,8 +423,6 @@
   			todo_priority_input.value = ""
   			todo_tag_list.innerHTML = ""
 
-  			// ajax send -> add 
-  			// 
   			AjaxModule.postInsertToDo(insertObject,(data)=>{
 	  			flower_div.innerHTML = ""
 	  			project_flower_div.innerHTML = ""
@@ -539,7 +519,6 @@
   				priority : update_todo_priority_input.value,
   				tag : tagList
   			}
-  			//console.log(insertObject);
 
   			// remove input data
   			update_todo_title_input.value = ""
@@ -577,7 +556,6 @@
   				priority : update_todo_priority_input.value,
   				tag : tagList
   			}
-  			//console.log(insertObject);
 
   			// remove input data
   			update_todo_title_input.value = ""
@@ -614,7 +592,6 @@
   				priority : update_todo_priority_input.value,
   				tag : tagList
   			}
-  			//console.log(insertObject);
 
   			// remove input data
   			update_todo_title_input.value = ""
@@ -750,22 +727,27 @@
   		
   		var search_bar_input = document.createElement("input")
   		var search_bar_box = document.createElement("div")
+  		var search_bar_formgroup = document.createElement("span")
 
+  		search_bar_formgroup.className = "form-group"
   		search_bar_box.className = "navbar-form navbar-left"
   		search_bar_input.type = "text"
   		search_bar_input.className = "form-control"
   		search_bar_input.placeholder = "Active Tag Search"
 
   		search_bar_box.appendChild(search_bar_input)
-  		search_bar_div.appendChild(search_bar_box)
+  		search_bar_formgroup.appendChild(search_bar_box)
+  		search_bar_div.appendChild(search_bar_formgroup)
 
   		search_bar_input.addEventListener('keydown', (e)=>{
   			if(e.key == "Enter" && search_bar_input.value != ""){
   				var flower_component_div = document.getElementById("flower_component_div")
   				flower_component_div.innerHTML = ""
+  				flower_component_div.style.width = "100%"
+  				flower_component_div.style.height = "100%"
   				var tagName = search_bar_input.value
   				AjaxModule.getToDoListWithTag({tag:tagName},function(datas){
-  					var search_flower_h2 = document.createElement("h2")
+  					var search_flower_h2 = document.getElementById("search_flower_h2")
   					var search_flower_box = document.createElement("div")
   					
   					search_flower_box.className = "flower_div"
@@ -774,7 +756,6 @@
   					search_flower_h2.style.marginLeft = "5%"
 
   					flower_component_div.insertBefore(search_flower_box, flower_component_div.firstChild)
-  					flower_component_div.insertBefore(search_flower_h2, flower_component_div.firstChild)
 
   					mSearchFlower = new ToDoFlower({
 	  				projectName : "Result of Tag Search",
@@ -782,7 +763,7 @@
 	  				projectId : "TagSearch",
 	  				projectColor : "55ff55",
 	  				projectOwnerId : "ToDoFlower"
-	  			}, {boxRatio:0.8, userId:datas.userData.userId,id : 'search_flower_box'})
+	  			}, {boxRatio:0.8, userId:datas.userData.userId,id : 'search_flower_box', rotateDirection:-1})
   					datas.todoList.forEach((telm, tind, tarr)=>{
 							mSearchFlower.addToDoElement(telm)
 					})
@@ -790,8 +771,12 @@
 
   				})
   			}else if(e.key == "Enter" && search_bar_input.value == ""){
+  				var search_flower_h2 = document.getElementById("search_flower_h2")
   				var flower_component_div = document.getElementById("flower_component_div")
+  				search_flower_h2.innerHTML = ""
   				flower_component_div.innerHTML = ""
+  				flower_component_div.style.width = "0%"
+  				flower_component_div.style.height = "0%"
 
   			}
   		})

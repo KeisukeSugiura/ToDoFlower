@@ -198,21 +198,6 @@ router.get('/userData/incomplete', loginCheckModule.apikeyCheck, function(req, r
 	});
 });
 
-// router.get('/todo/search/tag', loginCheckModule.apikeyCheck, function(req, res, next){
-// 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
-// 	ACDModule.getUserId(apikey, function(userIdObj){
-// 		if(userIdObj.userId){
-// 			var queryObj = Object.assign({}, req.query);
-// 			queryObj.userId = userIdObj.userId
-// 			ACDModule.searchToDoWithTag(queryObj,function(result){
-// 				res.json({userData:{userId:userIdObj.userId, userName:req.session.user.name}, todoList:result})
-// 			})
-// 		}else{
-// 			res.json(userIdObj);
-// 		}
-// 	});
-// })
-
 router.get('/todo/search/tag', loginCheckModule.apikeyCheck, function(req, res, next){
 	var apikey = req.body.apikey || req.query.apikey || req.session.user.apikey;
 	ACDModule.getUserId(apikey, function(userIdObj){

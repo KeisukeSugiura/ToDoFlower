@@ -12,26 +12,29 @@ class ToDoFlower{
 				orbitRatio,
 				circleOrbitRatio,
 				top,
-				left
+				left,
+				rotateDirection,
+				userId
 			}
 		 */
 		var option = _option || {}
 		var project = _project || {
 			projectName : "none",
+			projectId : "none",
 			projectColor : "ffff00"
 		}
-		//console.log(project)
 
 		this.targetElementId = option.id || "flower_div"
 		this.userId = option.userId || "FlowerToDo"
 
 		this.windowWidth = window.innerWidth
-		this.windowHeight = window.innerHeight
+		this.windowHeight = window.innerHeight　
+		this.rotateDirection = option.rotateDirection || 1
 		
 		this.flowerBoxRatio = option.boxRatio || 0.4						// 0.4 * window
-		this.flowerCircleOrbitRatio = option.circleOrbitRatio || 0.75		// 0.75 * 0.4 * window
-		this.flowerCircleRatio = option.circleRatio || 0.5 / 2				// 0.5 * 0.4 * window 
-		this.flowerOrbitRatio = option.orbitRatio || 0.2 / 2				// 0.2 * 0.1 * window
+		this.flowerCircleOrbitRatio = (option.circleOrbitRatio || 0.75) / 2	// 0.75 * 0.4 * window
+		this.flowerCircleRatio = (option.circleRatio || 0.5) / 2				// 0.5 * 0.4 * window 
+		this.flowerOrbitRatio = (option.orbitRatio || 0.2) / 2				// 0.2 * 0.1 * window
 
 		this.flowerPositionTopRatio = option.boxTopRatio || 0.5
 		this.flowerPositionLeftRatio = option.boxLeftRatio || 0.5 
@@ -44,10 +47,10 @@ class ToDoFlower{
 		this._setWindowResizeEvent()
 
 		this._initToDoFlowerBoxElement(project)
-		this._setFlowerFrame()
 
 		this._initToDoFlowerProjectElement(project)
 		this._initToDoFlowerListElement(project)
+		this._setFlowerFrame()
 
 	}
 
@@ -71,9 +74,11 @@ class ToDoFlower{
 		this.boxElement.style.height = String(this.flowerBoxSize) + "px"
 		this.boxElement.style.top = String(this.flowerPositionTop) + "px"
 		this.boxElement.style.left = String(this.flowerPositionLeft) + "px"
-		this.boxElement.style.boxShadow = "0px 0px 60px -20px #"+project.projectColor
+		this.boxElement.style.boxShadow = "0px 0px 100px -20px #"+project.projectColor
 		
 		document.getElementById(this.targetElementId).appendChild(this.boxElement)
+		this._setBoxRotateAnimation(this.boxElement, this.rotateDirection)
+
 	}
 
 	_initToDoFlowerProjectElement(project){
@@ -95,6 +100,8 @@ class ToDoFlower{
 		this.projectElement.appendChild(titleDiv)
 		this.boxElement.appendChild(this.projectElement)
 		this._setOnClickProjectEvent(this.projectElement, project)
+		this._setBoxRotateAnimation(this.projectElement, -1 * this.rotateDirection)
+
 	}
 
 	_initToDoFlowerListElement(project){
@@ -135,7 +142,9 @@ class ToDoFlower{
 				this._setOnClickToDoEvent(todoElement, elm)
 
 				this.petalElements.push(todoElement)
-				this.boxElement.appendChild(todoElement)				
+				this.boxElement.appendChild(todoElement)
+				this._setBoxRotateAnimation(todoElement, -1 * this.rotateDirection)
+
 			})
 		}else{
 			this.todoListLength = 0
@@ -150,9 +159,9 @@ class ToDoFlower{
 			this.flowerBoxSize = this.flowerBoxRatio * this.windowHeight
 		}
 
-		this.flowerCircleRadius = this.flowerCircleRatio * this.flowerBoxSize / 2
-		this.flowerCircleOrbitRadius = this.flowerCircleOrbitRatio * this.flowerBoxSize / 2
-		this.flowerOrbitRadius = this.flowerOrbitRadius * this.flowerBoxSize / 2
+		this.flowerCircleRadius = this.flowerCircleRatio * this.flowerBoxSize
+		this.flowerCircleOrbitRadius = this.flowerCircleOrbitRatio * this.flowerBoxSize
+		this.flowerOrbitRadius = this.flowerOrbitRatio * this.flowerBoxSize
 		
 		this.flowerPositionTop = this.windowHeight * this.flowerPositionTopRatio
 		this.flowerPositionLeft = this.windowWidth * this.flowerPositionLeftRatio
@@ -171,14 +180,19 @@ class ToDoFlower{
 		// uiにポジションサイズを反映
 		this.boxElement.style.width = String(this.flowerBoxSize) + "px"
 		this.boxElement.style.height = String(this.flowerBoxSize) + "px"
-		this.boxElement.style.top = String(this.flowerPositionTop) + "px"
-		this.boxElement.style.left = String(this.flowerPositionLeft) + "px"		
+		this.boxElement.style.top = String(this.flowerPositionTop - this.flowerBoxSize / 2) + "px"
+		this.boxElement.style.left = String(this.flowerPositionLeft - this.flowerBoxSize / 2) + "px"		
+
+		this.projectElement.style.width = String(this.flowerCircleRadius * 2) + "px"
+		this.projectElement.style.height = String(this.flowerCircleRadius * 2) + "px"
+		this.projectElement.style.top = String(-1 * this.flowerCircleRadius) + "px"
+		this.projectElement.style.left = String(-1 * this.flowerCircleRadius) + "px"
 
 		this.petalElements.forEach((elm, ind, arr)=>{
 			var angle = (ind * (360 / this.todoListLength) - 90) * (Math.PI / 180)
-			elm.style.top = String(this.flowerBoxSize / 2 + this.flowerCircleOrbitRadius * Math.sin(angle)) + "px"
-			elm.style.left = String(this.flowerBoxSize / 2 + this.flowerCircleOrbitRadius * Math.cos(angle)) + "px"
-				
+			elm.style.top = String(this.flowerBoxSize / 2 + this.flowerCircleOrbitRadius * Math.sin(angle) - this.flowerOrbitRadius) + "px"
+			elm.style.left = String(this.flowerBoxSize / 2 + this.flowerCircleOrbitRadius * Math.cos(angle) - this.flowerOrbitRadius) + "px"
+			this._setBoxRotateAnimation(elm, -1 * this.rotateDirection)
 		});
 	}
 
@@ -232,11 +246,11 @@ class ToDoFlower{
 		this._setOnClickToDoEvent(todoElement, todo)
 
 		this._adaptFrameToFlowerElements()
+		this._setBoxRotateAnimation(todoElement, -1 * this.rotateDirection)
+
 	}
 
-	_setOnMouseOverToDoEvent(element){
-		// 回転止まる
-	}
+	
 
 	_setOnClickToDoEvent(todoElement, todo){
 		// 更新モーダル
@@ -314,13 +328,40 @@ class ToDoFlower{
 		})
 	}
 
-	_setBoxAnimation(){
+	_setBoxRotateAnimation(element, direction){
+		//回転する
+		var self = this
+
+		var rotateAnime = anime({
+			targets: element,
+			rotate: 360 * direction,
+			loop: true,
+			easing: "linear",
+			duration:10000,
+			autoplay:true
+		})
+
+		var play = () => {
+			rotateAnime.play()
+		}
+
+		var pause = () => {
+			rotateAnime.pause()
+		}
+
+		this.boxElement.addEventListener('mouseenter', pause)
+		this.boxElement.addEventListener('mouseleave', play)
 
 	}
 
-	_setToDoAnimation(){
+
+
+	_setOnMouseOverToDoEvent(element){
+		// 回転止まる
+		
 
 	}
+
 
 	// set event listener
 	setOnFlowerFrameChanged(callback){

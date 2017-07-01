@@ -33,9 +33,6 @@ var CTRModule = (function(){
 	function insert(req,res,dbName){
 	    dbModule.getSchema(dbName,function(schema){
 	      var insertItem = {};
-	      // if(dbName=='password'){
-	      //   req.body.password = sechash.strongHashSync(req.body.password,setting.hash_opts);
-	      // }
 	      var keys = Object.keys(schema);
 	      keys.forEach(function(elm,index,arr){
 	        console.log(elm);
@@ -49,9 +46,6 @@ var CTRModule = (function(){
 
 	function upsert(req,res,dbName){
 	    dbModule.getSchema(dbName,function(schema){
-	      // if(dbName=='password'){
-	      //   req.body.password = sechash.strongHashSync(req.body.password,setting.hash_opts);
-	      // }
 	      var upsertItem = {};
 	      var schema_keys = Object.keys(schema);
 	      schema_keys.forEach(function(elm,index,arr){
