@@ -131,11 +131,15 @@ ToDoを花のように管理できるWebアプリケーション
   `npm install`  
 3. mongoDBをバックグラウンドで起動します（インストールしていない方はインストールをお願いします）  
   `mongod mongod -dbpath "データベースの場所"`  
-4. ./modules/setting.jsを編集してポート番号や利用するデータベースを記入します  
-5. サーバーを起動します  
+4. 外部ファイルに出力してあるデータベースファイルを読み込みます(todo_databaseはデフォルト)  
+  `mongorestore --db todo_database ./database/todo_database`  
+5. ./modules/setting.jsを編集してポート番号や利用するデータベースを記入します  
+6. サーバーを起動します  
   `node bin/www`  
-6. Webブラウザで該当URLにアクセスします（以下の記述はデフォルト）  
-  `http://localhost:55555`  
+7. Webブラウザで該当URLにアクセスします（以下の記述はデフォルト）  
+  `http://localhost:55555`
+8. 右上のログインボタンからログインできます。  
+  出力してあるデータは{id:kyoshida, password:0000}でログインできます  
 
 
 
